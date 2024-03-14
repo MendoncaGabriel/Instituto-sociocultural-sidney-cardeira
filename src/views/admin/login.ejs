@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Login Admin</h1>
+
+    <label for="user">Login:</label>
+    <input type="text" id="user" > <br>
+    <label for="password">Senha:</label>
+    <input type="password" id="password"><br>
+    <button type="button" onclick="login()">Entrar</button>
+ 
+    
+    
+   
+</body>
+</html>
+<script src="/js/fetch.js"></script>
+<script>
+
+    async function login(){
+        const res = await Fetch('/admin/login', 'POST', {
+            name: document.querySelector('input#user').value,
+            password: document.querySelector('input#password').value
+        })
+        console.log(res)
+        
+    }
+</script>
