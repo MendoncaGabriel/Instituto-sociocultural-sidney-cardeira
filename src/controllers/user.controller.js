@@ -107,8 +107,6 @@ exports.updateDependentData = async (req, res) => {
     }
 };
 
-
-//READ
 exports.searchUserById = async (req, res) => {
     try{
         const id = req.params.id
@@ -266,29 +264,3 @@ exports.activateUser = async (req, res) => {
         res.status(500).json({ message: "Ocorreu um erro ao ativar usuário" });
     }
 };
-
-
-// {
-//     "name": "João Silva",
-//     "address": "Rua Principal, 123",
-//     "rg": "123456789",
-//     "cpf": "987654321",
-//     "tel": "1234567890",
-//     "dateOfBirth": "1990-01-01",
-//     "dependents": [
-//       {
-//         "name": "Maria Silva",
-//         "image": "https://example.com/dependent1.jpg",
-//         "rg": "987654321",
-//         "cpf": "123456789",
-//         "dateOfBirth": "2010-05-15"
-//       },
-//       {
-//         "name": "Pedro Silva",
-//         "image": "https://example.com/dependent2.jpg",
-//         "rg": "123456789",
-//         "cpf": "987654321",
-//         "dateOfBirth": "2015-08-20"
-//       }
-//     ]
-//   }
