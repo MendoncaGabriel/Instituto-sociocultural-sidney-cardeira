@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar Novo Usuário</title>
+</head>
+<body>
+
+<h1>Criar Novo Usuário</h1>
+
+<form id="userForm">
+    <label for="name">Nome do Usuário:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="address">Endereço:</label><br>
+    <input type="text" id="address" name="address"><br><br>
+
+    <label for="rg">RG:</label><br>
+    <input type="text" id="rg" name="rg" required><br><br>
+
+    <label for="cpf">CPF:</label><br>
+    <input type="text" id="cpf" name="cpf" required><br><br>
+
+    <label for="tel">Telefone:</label><br>
+    <input type="text" id="tel" name="tel"><br><br>
+
+    <label for="dateOfBirth">Data de Nascimento:</label><br>
+    <input type="text" id="dateOfBirth" name="dateOfBirth" required><br><br>
+
+    <label for="image">Imagem do Usuário:</label><br>
+    <input type="file" id="image" name="image"><br><br>
+
+    <hr>
+    
+    <h2>Dependentes</h2>
+
+    <div id="dependents">
+        <!-- Dependente 1 -->
+        <div class="dependent">
+            <label for="dependentName1">Nome do Dependente:</label><br>
+            <input type="text" id="dependentName1" name="dependents[0][name]"><br><br>
+
+            <label for="dependentRg1">RG:</label><br>
+            <input type="text" id="dependentRg1" name="dependents[0][rg]"><br><br>
+
+            <label for="dependentCpf1">CPF:</label><br>
+            <input type="text" id="dependentCpf1" name="dependents[0][cpf]"><br><br>
+
+            <label for="dependentDateOfBirth1">Data de Nascimento:</label><br>
+            <input type="text" id="dependentDateOfBirth1" name="dependents[0][dateOfBirth]"><br><br>
+
+            <label for="dependentImage1">Imagem do Dependente:</label><br>
+            <input type="file" id="dependentImage1" name="dependents[0][image]"><br><br>
+        </div>
+    </div>
+
+    <button type="button" onclick="addDependent()">Adicionar Dependente</button><br><br>
+
+    <button type="button" onclick="submitForm()">Criar Usuário</button>
+</form>
+
+<script>
+function addDependent() {
+    const dependentsContainer = document.getElementById('dependents');
+    const dependentIndex = dependentsContainer.children.length + 1;
+
+    const dependentDiv = document.createElement('div');
+    dependentDiv.classList.add('dependent');
+
+    dependentDiv.innerHTML = `
+        <hr>
+        <h3>Dependente ${dependentIndex}</h3>
+        <label for="dependentName${dependentIndex}">Nome do Dependente:</label><br>
+        <input type="text" id="dependentName${dependentIndex}" name="dependents[${dependentIndex}][name]"><br><br>
+
+        <label for="dependentRg${dependentIndex}">RG:</label><br>
+        <input type="text" id="dependentRg${dependentIndex}" name="dependents[${dependentIndex}][rg]"><br><br>
+
+        <label for="dependentCpf${dependentIndex}">CPF:</label><br>
+        <input type="text" id="dependentCpf${dependentIndex}" name="dependents[${dependentIndex}][cpf]"><br><br>
+
+        <label for="dependentDateOfBirth${dependentIndex}">Data de Nascimento:</label><br>
+        <input type="text" id="dependentDateOfBirth${dependentIndex}" name="dependents[${dependentIndex}][dateOfBirth]"><br><br>
+
+        <label for="dependentImage${dependentIndex}">Imagem do Dependente:</label><br>
+        <input type="file" id="dependentImage${dependentIndex}" name="dependents[${dependentIndex}][image]"><br><br>
+    `;
+
+    dependentsContainer.appendChild(dependentDiv);
+}
+
+async function submitForm() {
+    const formData = new FormData(document.getElementById('userForm'));
+    try {
+        const response = await fetch('http://localhost:3001/user/create', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            console.log('Usuário criado:', responseData);
+            // Limpar o formulário ou realizar outra ação após o sucesso
+        } else {
+            console.error('Erro ao criar usuário:', response.statusText);
+            // Tratar o erro de acordo com sua lógica de aplicação
+        }
+    } catch (error) {
+        console.error('Erro de rede:', error);
+        // Tratar o erro de rede de acordo com sua lógica de aplicação
+    }
+}
+</script>
+
+</body>
+</html>

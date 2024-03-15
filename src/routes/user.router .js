@@ -5,6 +5,8 @@ const upload = require('../middlewares/upload.middleware')
 
 
 router.post('/create',  upload.single('image'), userController.create)
+router.post('/addNewDependent/:id',  upload.single('image'), userController.addNewDependent)
+router.patch('/updateDependentData/:id',  upload.single('image'), userController.updateDependentData)
 router.get('/searchUserById/:id', userController.searchUserById)
 router.get('/searchUserByName/:name', userController.searchUserByName)
 router.get('/searchUserByTel/:tel', userController.searchUserByTel)

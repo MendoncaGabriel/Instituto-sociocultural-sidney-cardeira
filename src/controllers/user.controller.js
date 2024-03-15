@@ -13,6 +13,7 @@ exports.create = async (req, res) => {
             user.image = req.file.filename; 
         }
 
+        
         const newUser = new userSchema(user)
         const savedUser = await newUser.save()
     
@@ -26,6 +27,86 @@ exports.create = async (req, res) => {
         res.status(400).json(err)
     }
 }
+
+exports.addNewDependent = async (req, res) => {
+    const id = req.params.id;
+    const { name, rg, cpf, dateOfBirth } = req.body;
+
+    try {
+        const user = await userSchema.findById(id);
+        if (!user) {
+            return res.status(404).json({ msg: 'Usuário não encontrado' });
+        }
+
+        // Cria um novo dependente
+        const newDependent = {
+            name,
+            rg,
+            cpf,
+            dateOfBirth
+        };
+
+        if (req.file) {
+            newDependent.image = req.file.filename; 
+        }
+
+        // Adiciona o dependente ao array de dependentes do usuário
+        user.dependents.push(newDependent);
+
+        // Salva as alterações no usuário
+        await user.save();
+
+        return res.status(200).json({ msg: `Dependente adicionado com sucesso ao usuário ${user.name}`, newDependent });
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+};
+
+exports.updateDependentData = async (req, res) => {
+    const dependentId = req.params.id;
+    const newData = req.body;
+
+    if (req.file) {
+        newData.image = req.file.filename;
+    }
+
+    try {
+        // Encontre o usuário que possui o dependente com o ID fornecido
+        const user = await userSchema.findOne({ "dependents._id": dependentId });
+        if (!user) {
+            return res.status(404).json({ msg: 'Usuário não encontrado' });
+        }
+
+        // Encontre o dependente dentro do array de dependentes do usuário
+        const dependent = user.dependents.id(dependentId);
+        if (!dependent) {
+            return res.status(404).json({ msg: 'Dependente não encontrado' });
+        }
+
+        // se houver uma imagem antiga e uma nova imagem, apague a antiga
+        if (dependent.image && req.file) {
+            // Apagar imagem anterior de forma síncrona
+            try {
+                const filePath = path.join(__dirname, '..', 'public', 'images', dependent.image);
+                fs.unlinkSync(filePath);
+                console.log('Imagem antiga apagada:', dependent.image);
+            } catch (err) {
+                console.error('Erro ao apagar a imagem antiga:', err);
+            }
+        }
+
+        // Atualize os dados do dependente com os novos dados
+        Object.assign(dependent, newData);
+
+        // Salve as alterações no usuário
+        await user.save();
+
+        return res.status(200).json({ msg: 'Dados do dependente atualizados com sucesso', dependent });
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+};
+
 
 //READ
 exports.searchUserById = async (req, res) => {
