@@ -32,6 +32,8 @@ app.use(express.static(path.join(__dirname,'src', 'public')));
 //ROTAS
 const indexRouter = require('./src/routes/index.router')
 const adminRouter = require('./src/routes/admin.router')
+const userRouter = require('./src/routes/user.router ')
+app.use('/user', userRouter)
 app.use('/admin', adminRouter)
 app.use('/', indexRouter)
 
