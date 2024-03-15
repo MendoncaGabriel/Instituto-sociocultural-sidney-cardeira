@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path')
 const userSchema = require('../database/schema/usuario.schema')
 
 exports.create = async (req, res) => {
@@ -6,7 +8,10 @@ exports.create = async (req, res) => {
         const {name, address, rg, tel, dateOfBirth, dependents} = req.body
         const user = {name, address, rg, tel, dateOfBirth, dependents}
 
-        req.file ? user.image = req.file.fileName : ''
+        // Verifica se há um arquivo de imagem na requisição
+        if (req.file) {
+            user.image = req.file.filename; 
+        }
 
         const newUser = new userSchema(user)
         const savedUser = await newUser.save()
@@ -93,11 +98,41 @@ exports.searchUsersByActive = async (req, res) => {
     }
 };
 
-
 exports.updateUser = async (req, res) => {
     try {
         const id = req.params.id;
         const data = req.body;
+
+        // Verifica se um arquivo foi enviado
+        if (req.file) {
+            data.image = req.file.filename; 
+            console.log('Nova imagem:', req.file.filename )
+
+            // Verificar se atualizou a foto
+            const dataUser = await userSchema.findById(id)
+            if (dataUser.image && dataUser.image !== req.file.filename) {
+                // Apagar imagem anterior
+                const filePath = path.join(__dirname, '..', 'public', 'images', dataUser.image);
+
+                // Verifica se o arquivo existe antes de tentar apagá-lo
+                fs.access(filePath, fs.constants.F_OK, (err) => {
+                    if (err) {
+                        console.error('O arquivo não existe:', err);
+                        return;
+                    }
+
+                    // Se o arquivo existe, tenta apagá-lo
+                    fs.unlink(filePath, (err) => {
+                        if (err) {
+                            console.error('Erro ao apagar o arquivo:', err);
+                            return;
+                        }
+                        console.log('Arquivo apagado com sucesso!');
+                    });
+                });
+                console.log('Imagem antiga apagada:', dataUser.image)
+            }
+        }
 
         // Adicione a opção { new: true } para retornar o usuário atualizado
         const updatedUser = await userSchema.findByIdAndUpdate(id, data, { new: true });

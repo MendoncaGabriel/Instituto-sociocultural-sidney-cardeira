@@ -1,34 +1,36 @@
 const mongoose = require('mongoose');
 
-const dependents = new mongoose.Schema({
+const dependentSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  image:{
+  image: {
     type: String
   },
   rg: {
     type: String,
+    unique: true
   },
   cpf: {
     type: String,
+    unique: true
   },
   dateOfBirth: {
     type: String,
   },
-})
+});
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
     unique: true
   },
-  activeUser:{
+  activeUser: {
     type: Boolean,
     default: true
   },
-  image:{
+  image: {
     type: String
   },
   address: {
@@ -49,13 +51,13 @@ const userSchema = new mongoose.Schema({
   dateOfBirth: {
     type: String,
   },
-  dependents: [dependents],
+  dependents: [dependentSchema],
   createdAt: {
     type: Date,
     default: Date.now 
   }
 });
 
-const user = mongoose.model('user', userSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = user;
+module.exports = User;
