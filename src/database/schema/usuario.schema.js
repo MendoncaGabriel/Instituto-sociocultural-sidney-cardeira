@@ -3,19 +3,15 @@ const mongoose = require('mongoose');
 const dependentSchema = new mongoose.Schema({
   name: {
     type: String,
-   
   },
   image: {
     type: String
   },
   rg: {
     type: String,
-   
-
   },
   cpf: {
     type: String,
-
   },
   dateOfBirth: {
     type: String,
@@ -51,7 +47,9 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-   
+  },
+  email: {
+    type: String,
   },
   activeUser: {
     type: Boolean,
@@ -60,25 +58,19 @@ const userSchema = new mongoose.Schema({
   image: {
     type: String
   },
-  address: address,
   rg: {
     type: String,
-   
-
   },
   cpf: {
     type: String,
-   
-
   },
   tel: {
     type: String,
-
-
   },
   dateOfBirth: {
     type: String,
   },
+  address: address,
   dependents: [dependentSchema],
   createdAt: {
     type: Date,
