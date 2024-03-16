@@ -3,28 +3,55 @@ const mongoose = require('mongoose');
 const dependentSchema = new mongoose.Schema({
   name: {
     type: String,
+   
   },
   image: {
     type: String
   },
   rg: {
     type: String,
-    unique: true
+   
+
   },
   cpf: {
     type: String,
-    unique: true
+
   },
   dateOfBirth: {
     type: String,
   },
 });
 
+const address = new mongoose.Schema({
+  publicPlace:{
+    type: String
+  }, 
+  cep:{
+    type: String
+  },
+  neighborhood:{
+    type: String
+  },
+  city:{
+    type: String
+  },
+  uf:{
+    type: String
+  },
+  country:{
+    type: String
+  },
+  houseNumber:{
+    type: String
+  }
+
+})
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+   
   },
   activeUser: {
     type: Boolean,
@@ -33,20 +60,21 @@ const userSchema = new mongoose.Schema({
   image: {
     type: String
   },
-  address: {
-    type: String,
-  },
+  address: address,
   rg: {
     type: String,
-    unique: true
+   
+
   },
   cpf: {
     type: String,
-    unique: true
+   
+
   },
   tel: {
     type: String,
-    unique: true
+
+
   },
   dateOfBirth: {
     type: String,

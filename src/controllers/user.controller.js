@@ -3,27 +3,25 @@ const path = require('path')
 const userSchema = require('../database/schema/usuario.schema')
 
 exports.create = async (req, res) => {
-
     try{
-        const {name, address, rg, tel, dateOfBirth, dependents} = req.body
-        const user = {name, address, rg, tel, dateOfBirth, dependents}
-
+        const {name, address, rg, tel, cpf, dateOfBirth, dependents} = req.body
+        const user = {name, address, rg, cpf, tel, dateOfBirth, dependents}
         // Verifica se há um arquivo de imagem na requisição
         if (req.file) {
             user.image = req.file.filename; 
         }
-
-        
         const newUser = new userSchema(user)
         const savedUser = await newUser.save()
-    
-    
         res.status(200).json(savedUser)
     }
     catch(err){
-        if (err.code === 11000 && err.keyPattern.name) {
-            return res.status(400).json(`Usuário com o nome '${req.body.name}' já cadastrado!`)
+        if (err.code === 11000) {
+            const duplicatedField = Object.keys(err.keyPattern)[0];
+            console.log(err)
+            console.log(duplicatedField)
+            return res.status(400).json(`O campo '${duplicatedField}' já está em uso.`);
         }
+        console.log(err)
         res.status(400).json(err)
     }
 }

@@ -14,10 +14,6 @@ app.use(express.json());
 app.use(compression())
 app.use(cors())
 
-app.use((req, res, next) => {
-    console.log(req.body);
-    next();
-});
 
 
 //CONFIGURAÃO DA PASTA VIEWS PARA ARQUIVOS EJS
@@ -30,12 +26,12 @@ app.use(express.static(path.join(__dirname,'src', 'public')));
 
 
 //ROTAS
-const indexRouter = require('./src/routes/index.router')
+const pageRouter = require('./src/routes/page.router')
 const adminRouter = require('./src/routes/admin.router')
 const userRouter = require('./src/routes/user.router ')
 app.use('/user', userRouter)
 app.use('/admin', adminRouter)
-app.use('/', indexRouter)
+app.use('/', pageRouter)
 
 
 const PORT = process.env.PORT || 3002
