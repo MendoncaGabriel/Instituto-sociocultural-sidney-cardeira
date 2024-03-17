@@ -25,3 +25,11 @@ exports.personProfile = async (req, res) => {
     console.log(userData)
     res.render('personProfile', {page: 'personProfile', userData})
 }
+
+exports.editRegistration = async (req, res) => {
+    const id = req.query.id;
+   
+    const userData = await userController.searchUserById(id);
+    console.log(userData)
+    res.render('editRegistration', {page: 'editRegistration', userData})
+}
