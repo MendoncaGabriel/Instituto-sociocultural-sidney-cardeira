@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pessoas</title>
+    <link rel="stylesheet" href="/css/output.css">
+</head>
+
+<body class=" h-full">
+    <section class=" h-[100vh] w-full grid grid-cols-6 grid-rows-10">
+        <%- include('components/assidebar.ejs') %>
+        <%- include('components/navbar.ejs') %>
+
+        <main class="bg-gray-300 p-10 shadow  col-span-5 row-span-9 w-full border border-red-500 overflow-y-auto">
+            <section class="mx-auto bg-white p-10 w-full">
+
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300  ">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    NOME
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    TELEFONE
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    CPF
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    RG
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    DATA DE NASCIMENTO
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    DATA DE REGISTRO
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    EDITAR
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <% users.forEach(e => { %> 
+                                <tr id="<%= e._id  %>" class="bg-gray-100  hover:bg-gray-200 border-b  border border-blue-500 relative">
+                                    <th  scope="row" class="redirect px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">             
+                                        <%= e.name  %>
+                                    </th>
+                                    <td class="px-6 py-4 redirect">
+                                        <%= e.tel  %>
+                                    </td>
+                                    <td class="px-6 py-4 redirect">
+                                        <%= e.cpf  %>
+                                    </td>
+                                    <td class="px-6 py-4 redirect">
+                                        <%= e.rg  %>
+                                    </td>
+                                    <td class="px-6 py-4 redirect">
+                                        <%= e.dateOfBirth  %>
+                                    </td>
+                                    <td class="px-6 py-4 redirect">
+                                        <% const date = new Date(e.createdAt); %>
+                                        <%= `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} - ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}` %>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <button>EDITAR</button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+          
+            
+        </main>
+
+    </section>
+</body>
+</html>
+
+
+<script>
+    document.querySelectorAll('.redirect').forEach((e)=>{
+        e.addEventListener('click', (e)=>{
+            window.location.href = `/perfil?id=${e.target.parentNode.id}`
+        })
+    })
+</script>

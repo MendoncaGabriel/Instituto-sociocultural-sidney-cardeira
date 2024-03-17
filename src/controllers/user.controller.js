@@ -4,16 +4,18 @@ const userSchema = require('../database/schema/usuario.schema')
 
 exports.create = async (req, res) => {
     try{
-        const {name, rg, cpf, tel, dateOfBirth, cep, publicPlace, neighborhood, houseNumber, city, uf, email} = req.body
-        const user = {name, rg, cpf, tel, dateOfBirth, address:{cep, publicPlace, neighborhood, houseNumber, city, uf, email}}
-
-
+        const {name, rg, cpf, tel, dateOfBirth, cep, publicPlace, neighborhood, houseNumber, city, uf, email, whatsapp} = req.body
+        const user = {name, whatsapp: Boolean(whatsapp), email, rg, cpf, tel, dateOfBirth, address:{cep, publicPlace, neighborhood, houseNumber, city, uf}}
+        
+        
         // Verifica se há um arquivo de imagem na requisição
         if (req.file) {
             user.image = req.file.filename; 
         }
         const newUser = new userSchema(user)
         const savedUser = await newUser.save()
+        console.log('Objeto do usuario', user)
+        console.log('Usuario salvo', savedUser)
         res.status(200).json(savedUser)
     }
     catch(err){
@@ -107,16 +109,30 @@ exports.updateDependentData = async (req, res) => {
     }
 };
 
-exports.searchUserById = async (req, res) => {
+exports.searchUserById = async (id) => {
     try{
-        const id = req.params.id
         const user = await userSchema.findById(id)
-        res.status(200).json(user)
+        return user
     }
     catch(err){
-        res.status(400).json(err)
+        throw err;
     }
 }
+
+exports.getListOfUsers = async (page, limit) => {
+    try {
+        const skip = (page - 1) * limit;
+        const users = await userSchema.find().skip(skip).limit(limit);
+        
+        return {
+            currentPage: page,
+            totalPages: Math.ceil(await userSchema.countDocuments() / limit),
+            users
+        };
+    } catch (err) {
+        throw err;
+    }
+};
 
 exports.searchUserByName = async (req, res) => {
     try{

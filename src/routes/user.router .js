@@ -15,5 +15,6 @@ router.get('/searchUsersByActive/:active', userController.searchUsersByActive)
 router.patch('/updateUser/:id', upload.single('image'), userController.updateUser)
 router.get('/disactivateUser/:id', userController.disactivateUser)
 router.get('/activateUser/:id', userController.activateUser)
+router.get('/getListOfUsers/:page/:limit', userController.getListOfUsers)
 
 module.exports = router

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pessoas</title>
+    <link rel="stylesheet" href="/css/output.css">
+</head>
+
+<body class=" h-full">
+    <section class=" h-[100vh] w-full grid grid-cols-6 grid-rows-10">
+        <%- include('components/assidebar.ejs') %>
+        <%- include('components/navbar.ejs') %>
+
+        <main class="bg-gray-300 p-10 shadow  col-span-5 row-span-9 w-full border border-red-500 overflow-y-auto">
+            <section class="mx-auto bg-white p-10 w-full text-gray-600 ">
+
+
+                <div class="flex mt-2">
+                    <img src="<%= typeof userData.image !== 'undefined' && userData.image ? '/images/'+userData.image : '/default-placeholder.png' %>" alt="imagem do usuario" class="w-48 h-64 object-cover rounded-sm mr-5">
+                    
+                    <section class="flex justify-between w-full">
+
+                        <div class=" px-4">
+                            <h2 class="text-lg text-gray-600 mb-2 mt-5">Principal</h2><hr>
+                            <p><b>Nome: </b><%= typeof userData.name !== 'undefined' && userData.name ? userData.name : 'Não definido' %></p>
+                            <p><b>Status: </b><%= typeof userData.activeUser !== 'undefined' && userData.activeUser && userData.activeUser == true ? 'ATIVO' : 'INATIVO' %></p>
+                            <p><b>RG: </b><%= typeof userData.rg !== 'undefined' && userData.rg ? userData.rg : 'Não definido' %></p>
+                            <p><b>CPF: </b><%= typeof userData.cpf !== 'undefined' && userData.cpf ? userData.cpf : 'Não definido' %></p>
+                            <p><b>DATA DE NASCIMENTO: </b><%= typeof userData.dateOfBirth !== 'undefined' && userData.dateOfBirth ? userData.dateOfBirth : 'Não definido' %></p>
+                        </div>
+                        <div  class=" px-4">
+                            <h2 class="text-lg text-gray-600 mb-2 mt-5">Contato</h2><hr>
+                            <p><b>TELEFONE: </b><%= typeof userData.tel !== 'undefined' && userData.tel ? userData.tel : 'Não definido' %></p>
+                            <p><b>WhatsApp: </b> <%- typeof userData.whatsapp !== 'undefined' && userData.whatsapp && userData.tel ? `<span><a href="https://wa.me/${userData.tel}" class="text-blue-600 hover:underline" target="_blank">Abrir WhatsApp</a></span>` : 'Sem WhatsApp' %></p>
+                            <p><b>Email: </b><%= typeof userData.email !== 'undefined' && userData.email ? userData.email : 'Não definido' %></p>
+                        </div>
+                        <div  class=" px-4">
+                            <h2 class="text-lg text-gray-600 mb-2 mt-5">Endereço</h2><hr>
+                            <p><b>CEP: </b><%= typeof userData.address.cep !== 'undefined' && userData.address.cep ? userData.address.cep : 'Não definido' %></p>
+                            <p><b>Rua: </b><%= typeof userData.address.publicPlace !== 'undefined' && userData.address.publicPlace ? userData.address.publicPlace : 'Não definido' %></p>
+                            <p><b>Bairro: </b><%= typeof userData.address.neighborhood !== 'undefined' && userData.address.neighborhood ? userData.address.neighborhood : 'Não definido' %></p>
+                            <p><b>Cidade: </b><%= typeof userData.address.city !== 'undefined' && userData.address.city ? userData.address.city : 'Não definido' %></p>
+                            <span><b>UF: </b><%= typeof userData.address.uf !== 'undefined' && userData.address.uf ? userData.address.uf : 'Não definido' %></span>
+                            <span><b>Nº: </b><%= typeof userData.address.houseNumber !== 'undefined' && userData.address.houseNumber ? userData.address.houseNumber : 'Não definido' %></span>
+                        </div>
+                    </section>
+
+                    
+                </div>
+    
+                                  
+                <a href="#" class="ml-auto block max-w-min rounded-sm px-8 py-2 text-white bg-blue-600 hover:bg-blue-500">EDITAR</a>
+            </section>
+          
+            
+        </main>
+
+    </section>
+</body>
+</html>
+
