@@ -18,10 +18,19 @@ exports.listOfPeoples = async (req, res) => {
         res.status(400).json(err);
     }
 };
+
 exports.personProfile = async (req, res) => {
     const id = req.query.id;
    
     const userData = await userController.searchUserById(id);
     console.log(userData)
     res.render('personProfile', {page: 'personProfile', userData})
+}
+
+exports.editRegistrationOfPeople = async (req, res) => {
+    const id = req.query.id;
+   
+    const userData = await userController.searchUserById(id);
+    console.log(userData)
+    res.render('editRegistrationOfPeople', {page: 'editRegistrationOfPeople', userData})
 }

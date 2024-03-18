@@ -88,16 +88,10 @@
                         <input type="file" name="image" id="photo" class="w-full h-full opacity-0" accept="image/*">
                     </div>
                 </div>
-                <hr>
 
-                <!-- ADICIONAR DEPENDENTES -->
-                <h2 class="text-gray-600 font-semibold text-lg  mb-5 my-5">Dependentes</h2>
-                <div class="p-10 w-full shadow-md border mb-5" id="containerDependents"></div>
-
-                <div class=" flex justify-between items-center w-full">
-                    <button type="button" onclick="addDependents()" class="px-8 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 hover:shadow-md"> Adicionar dependentes</button>
-                    <button type="submit" class="px-8 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 hover:shadow-md">CADASTRAR</button>
-                </div>
+                
+                
+                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 ml-auto block focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">CADASTRAR</button>
             </form>
             
         </main>
@@ -105,49 +99,6 @@
     </section>
 </body>
 </html>
-
-<!-- Adicioner dependentes -->
-<script>
-    function removeDependents(id){
-        document.getElementById(id).remove()
-    }
-
-    function addDependents(){
-        const containerDependents = document.getElementById('containerDependents')
-        const id = `dp${Date.now()}`
-        containerDependents.innerHTML += `
-        
-            <div id="${id}"  class="grid grid-cols-6 items-center space-x-5  p-10 w-full shadow-md border my-5 relative ">
-            <button type="button" onclick="removeDependents('${id}')" class="px-8 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 hover:shadow-md absolute top-2 right-2">Remover</button>
-                        
-            <div class="grid grid-cols-2 w-full max-w-screen-md  col-span-5 gap-x-4 ">
-                <div class="relative z-0 w-full mb-5 group ">
-                    <input type="text" name="name_dependent" id="" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                    <label for="" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome</label>
-                </div>
-                <div class="relative z-0 w-full mb-5 group ">
-                    <input type="text" name="rg_dependent" id="" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                    <label for="" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">RG</label>
-                </div>
-                <div class="relative z-0 w-full mb-5 group ">
-                    <input type="text" name="cpf_dependent" id="" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                    <label for="" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">CPF</label>
-                </div>
-                <div class="relative z-0 w-full mb-5 group ">
-                    <input type="text" name="dateOfBirth_dependent" id="" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                    <label for="" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Data de Nascimento</label>
-                </div>
-                <div>
-                    <h2 class="text-gray-600 font-semibold text-lg  mb-5">Foto do dependente</h2>
-                    <input type="file" name="image" id="" class="w-full h-full  image_dependent" accept="image/*">
-                </div>
-            </div>
-        
-        `
-    }
-</script>
-
-
 <!-- por imagem no input -->
 <script>
     // Selecione o input de arquivo
@@ -172,11 +123,20 @@
 <!-- enviar formulario -->
 <script>
 document.getElementById('formCreate').addEventListener('submit', function(event) {
-    event.preventDefault(); 
+    event.preventDefault(); // Evita o envio padrão do formulário
 
-    let formData = new FormData(this); 
+    var formData = new FormData(this); // Cria um objeto FormData para armazenar os dados do formulário
 
-    formData.append('image', document.getElementById('photo').files[0]);
+    // Extrai a imagem selecionada
+    var imageFile = document.getElementById('photo').files[0];
+
+    // Cria um novo FormData
+    var formData = new FormData();
+
+    // Adiciona a imagem ao FormData com o nome correto do campo ('image')
+    formData.append('image', imageFile);
+
+    // Adiciona os outros campos do formulário ao FormData (certifique-se de adicionar todos os campos necessários)
     formData.append('name', document.getElementById('name').value);
     formData.append('rg', document.getElementById('rg').value);
     formData.append('cpf', document.getElementById('cpf').value);
@@ -191,27 +151,10 @@ document.getElementById('formCreate').addEventListener('submit', function(event)
     formData.append('email', document.getElementById('email').value);
     formData.append('whatsapp', document.getElementById('whatsapp').checked);
 
-
-    const image_dependent = document.querySelectorAll('.image_dependent')
-    const name_dependent = document.querySelectorAll('[name="name_dependent"]')
-    const rg_dependent = document.querySelectorAll('[name="rg_dependent"]')
-    const cpf_dependent = document.querySelectorAll('[name="cpf_dependent"]')
-    const dateOfBirth_dependent = document.querySelectorAll('[name="dateOfBirth_dependent"]')
-
-    let dependentsArray = []
-    for(let i = 0; i < name_dependent.length; i++){
-        dependentsArray.push({
-            name: name_dependent[i].value ? name_dependent[i].value : '',
-            image: image_dependent[i].files[0],
-            rg: rg_dependent[i].value ? rg_dependent[i].value : '',
-            cpf: cpf_dependent[i].value ? cpf_dependent[i].value : '',
-            dateOfBirth: dateOfBirth_dependent[i].value ? dateOfBirth_dependent[i].value : '',
-        })
-    }
-
-    formData.append('dependents[]', JSON.stringify(dependentsArray));
+ 
 
 
+    // Envio da requisição POST para o endpoint /user/create
     fetch('/user/create', {
         method: 'POST',
         body: formData // Envia FormData, não JSON

@@ -4,8 +4,18 @@ const userSchema = require('../database/schema/usuario.schema')
 
 exports.create = async (req, res) => {
     try{
-        const {name, rg, cpf, tel, dateOfBirth, cep, publicPlace, neighborhood, houseNumber, city, uf, email, whatsapp} = req.body
-        const user = {name, whatsapp: Boolean(whatsapp), email, rg, cpf, tel, dateOfBirth, address:{cep, publicPlace, neighborhood, houseNumber, city, uf}}
+        const {name, rg, cpf, tel, dateOfBirth, cep, publicPlace, neighborhood, houseNumber, city, uf, email, whatsapp, dependents} = req.body
+        const user = {
+            name, 
+            email, 
+            rg, 
+            cpf, 
+            tel, 
+            dateOfBirth, 
+            whatsapp: Boolean(whatsapp), 
+            address:{cep, publicPlace, neighborhood, houseNumber, city, uf},
+            dependents:[dependents]
+        }
         
         
         // Verifica se há um arquivo de imagem na requisição
