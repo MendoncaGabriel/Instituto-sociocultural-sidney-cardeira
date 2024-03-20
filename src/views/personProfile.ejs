@@ -15,9 +15,10 @@
         <main class="bg-gray-300 p-10 shadow  col-span-5 row-span-9 w-full border border-red-500 overflow-y-auto">
             <section class="mx-auto bg-white p-10 w-full text-gray-600 ">
 
-
+                <h2 class="text-2xl">Principal</h2>
+                <hr class="my-5">
                 <div class="flex mt-2">
-                    <img src="<%= userData.image ? '/images/'+userData.image : '/default-placeholder.png' %>" alt="imagem do usuario" class="w-48 h-64 object-cover rounded-sm mr-5">
+                    <img src="<%= userData.image ? '/images/'+userData.image : '/default-placeholder.png' %>" alt="imagem do usuario" class="w-52 h-72 object-cover rounded-sm mr-5">
                     
                     <section class="flex justify-between w-full">
 
@@ -29,13 +30,7 @@
                             <p><b>CPF: </b><%= userData.cpf ?? 'Não definido' %></p>
                             <p><b>DATA DE NASCIMENTO: </b><%= typeof userData.dateOfBirth !== 'undefined' && userData.dateOfBirth ? userData.dateOfBirth : 'Não definido' %></p>
                         </div>
-                        <div  class=" px-4">
-                            <h2 class="text-lg text-gray-600 mb-2 mt-5">Contato</h2><hr>
-                            <p><b>TELEFONE: </b><%=  userData.tel ?? 'Não definido' %></p>
-                            <p><b>WhatsApp: </b> <%- userData.whatsapp ? `<span><a href="https://wa.me/${userData.tel}" class="text-blue-600 hover:underline" target="_blank">Abrir WhatsApp</a></span>` : 'Sem WhatsApp' %></p>
 
-                            <p><b>Email: </b><%=  userData.email ?? 'Não definido' %></p>
-                        </div>
                         <div  class=" px-4">
                             <h2 class="text-lg text-gray-600 mb-2 mt-5">Endereço</h2><hr>
                             <p><b>CEP: </b><%= userData.address.cep ?? 'Não definido' %></p>
@@ -45,10 +40,34 @@
                             <span><b>UF: </b><%= userData.address.uf ?? 'Não definido' %></span>
                             <span><b>Nº: </b><%= userData.address.houseNumber ?? 'Não definido' %></span>
                         </div>
-                    </section>
 
+                        <div  class=" px-4">
+                            <h2 class="text-lg text-gray-600 mb-2 mt-5">Contato</h2><hr>
+                            <p><b>TELEFONE: </b><%=  userData.tel ?? 'Não definido' %></p>
+                            <p><b>WhatsApp: </b> <%- userData.whatsapp ? `<span><a href="https://wa.me/${userData.tel}" class="text-blue-600 hover:underline" target="_blank">Abrir WhatsApp</a></span>` : 'Sem WhatsApp' %></p>
+                            <p><b>Email: </b><%=  userData.email ?? 'Não definido' %></p>
+                        </div>
+                    </section>
+                    
+                    
                     
                 </div>
+                <h2 class="text-2xl mt-10"><%=  userData.dependents  && userData.dependents.length > 0 ? 'Dependentes' : ''  %></h2>
+                <hr class="my-5">
+                <div class="grid lg:grid-cols-2 md:grid-cols-1 xl:grid-cols-3   gap-5 mb-5 ">
+                    <%userData.dependents.length > 0 && userData.dependents.forEach(e => { %>
+                        <div class="flex items-start  m-auto border shadow-md">
+                            <img src="<%= e.image ? `/images/${e.image}` : '/default-placeholder.png'  %>" alt="" class=" border-gray-300  w-36 h-52 object-cover rounded-sm">
+                            <div class="text-sm  ml-2">
+                                <p><b>Nome: </b><%= e.name ?? 'Não definido' %></p>
+                                <p><b>Data de Nascimento: </b><%= e.dateOfBirth ?? 'Não definido' %></p>
+                                <p><b>RG: </b><%= e.rg ?? 'Não definido' %></p>
+                                <p><b>CPF: </b><%= e.cpf ?? 'Não definido' %></p>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+                        
     
                                   
                 <a href="/editar-cadastro?id=<%= userData._id  %>" class="ml-auto block max-w-min rounded-sm px-8 py-2 text-white bg-blue-600 hover:bg-blue-500">EDITAR</a>

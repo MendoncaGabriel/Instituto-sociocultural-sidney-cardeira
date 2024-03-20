@@ -103,3 +103,14 @@ cep.addEventListener('blur', () => {
   })
   .catch(error =>  alert('Erro ao consultar CEP'));
 })
+
+
+function deactivateRegistration(){
+  const res= prompt('Desativar usuario?: SIM / NÃO')
+
+  if(res.toLocaleLowerCase() == 'sim'){
+
+  }else{
+    console.log
+  }
+}

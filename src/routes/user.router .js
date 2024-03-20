@@ -16,7 +16,7 @@ router.get('/searchUserByTel/:tel', userController.searchUserByTel)
 router.get('/searchUsersByDate/:date', userController.searchUsersByDate)
 router.get('/searchUsersByActive/:active', userController.searchUsersByActive)
 router.get('/disactivateUser/:id', userController.disactivateUser)
- router.get('/activateUser/:id', userController.activateUser)
+router.get('/activateUser/:id', userController.activateUser)
 router.get('/getListOfUsers/:page/:limit', userController.getListOfUsers)
 
 module.exports = router

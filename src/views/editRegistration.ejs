@@ -14,80 +14,134 @@
 
         <main class="bg-gray-300 p-10 shadow  col-span-5 row-span-9 w-full border border-red-500 overflow-y-auto">
             
-
+            
             <form id="formCreate" class="mx-auto bg-white p-10 w-full" enctype="multipart/form-data">
+                <button onclick="deactivateRegistration()" type="button" class="px-8 py-2 mb-10 bg-red-600 hover:bg-red-500 font-semibold text-white">DESATIVAR CADASTRO</button>
 
-                <h2 class="text-gray-600 font-semibold text-lg mb-5">Informações basicas</h2>
-                <div class="mb-5 grid grid-cols-3 gap-x-10">
+                <h2 class="text-gray-600 font-semibold text-lg ">Informações basicas</h2>
+                <hr><br>
+                <div class="mb-5 grid grid-cols-3 gap-x-10 gap-y-5">
 
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.name !== 'undefined' && userData.name ? userData.name : '' %>" type="text" name="name" id="name" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label for="name" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome</label>
+                    <div class="block w-full">
+                        <label for="name" class="block text-sm text-gray-500">Nome: <span class="text-red-500 ">*</span></label>
+                        <input value="<%= userData.name ?? "Não definido"%>" required type="text" name="name" class="w-full px-4  border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+                    </div>
+                    <div class="block w-full">
+                        <label for="email" class="block text-sm text-gray-500">Email:</label>
+                        <input value="<%= userData.email ?? "Não definido"%>" type="text" name="email" class="w-full px-4  border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+                    </div>
+                    <div class="block w-full">
+                        <label for="rg" class="block text-sm text-gray-500">RG:</label>
+                        <input value="<%= userData.rg ?? "Não definido"%>" type="text" name="rg" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+                    </div>
+                    <div class="block w-full">
+                        <label required for="cpf" class="block text-sm text-gray-500">CPF: <span class="text-red-500 ">*</span></label>
+                        <input value="<%= userData.cpf ?? "Não definido"%>" type="text" name="cpf" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+                    </div>
+                    <div class="block w-full">
+                        <label for="tel" class="block text-sm text-gray-500">Telefone:</label>
+                        <input value="<%= userData.tel ?? "Não definido"%>" type="text" name="tel" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.email !== 'undefined' && userData.email ? userData.email : '' %>" type="email" name="email" id="email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label for="email" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
+                        <label for="whatsapp" class="text-sm text-gray-500">WhatsApp</label> <br>
+                        <input <%= userData.whatsapp ? 'checked': '' %>  type="checkbox" name="whatsapp">
+                        <span class="text-gray-600 px-2">Este número possui WhatsApp?</span>
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.rg !== 'undefined' && userData.rg ? userData.rg : '' %>" type="text" name="rg" id="rg" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="rg" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">RG</label>
+                    <div class="block w-full">
+                        <label for="dateOfBirth" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500 ">*</span></label>
+                        <input value="<%= userData.dateOfBirth ?? "Não definido"%>" required type="text" name="dateOfBirth" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.cpf !== 'undefined' && userData.cpf ? userData.cpf : '' %>" type="text" name="cpf" id="cpf" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="cpf" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">CPF</label>
-                    </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.tel !== 'undefined' && userData.tel ? userData.tel : '' %>" type="text" name="tel" id="tel" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="tel" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Telefone</label>
-                    </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <label  for="whatsapp" class="text-sm text-gray-500">WhatsApp</label> <br>
-                        <input <%= typeof userData.whatsapp !== 'undefined' && userData.whatsapp && userData.whatsapp == true ? 'checked' : '' %> type="checkbox" id="whatsapp" name="whatsapp" class="">
-                        <span class="text-gray-600 px-2">Este número possui WhatsApp</span>
-                    </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.dateOfBirth !== 'undefined' && userData.dateOfBirth ? userData.dateOfBirth : '' %>" type="text" name="dateOfBirth" id="dateOfBirth" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="dateOfBirth" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Date de nascimento</label>
-                    </div>
+
                 </div>
               
-                <h2 class="text-gray-600 font-semibold text-lg  mb-5">Endereço</h2>
-                <div class="mb-5 grid grid-cols-3 gap-x-10">
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.address.cep !== 'undefined' && userData.address.cep ? userData.address.cep : '' %>" type="text" name="cep" id="cep" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="cep" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Cep</label>
+                <h2 class="text-gray-600 font-semibold text-lg mt-10">Endereço</h2>
+                <hr><br>
+                <div class="mb-5 grid grid-cols-3 gap-x-10 gap-y-5">
+
+                    <div class="block w-full">
+                        <label for="cep" class="block text-sm text-gray-500">CEP:</label>
+                        <input value="<%= userData.address.cep ?? "Não definido"%>" type="number" name="cep" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.address.publicPlace !== 'undefined' && userData.address.publicPlace ? userData.address.publicPlace : '' %>" type="text" name="publicPlace" id="publicPlace" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="publicPlace" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">logradouro</label>
+                    <div class="block w-full">
+                        <label for="publicPlace" class="block text-sm text-gray-500">Rua:</label>
+                        <input value="<%= userData.address.publicPlace?? "Não definido"%>"  type="text" name="publicPlace" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.address.neighborhood !== 'undefined' && userData.address.neighborhood ? userData.address.neighborhood : '' %>" type="text" name="neighborhood" id="neighborhood" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="neighborhood" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Bairro</label>
+                    <div class="block w-full">
+                        <label for="neighborhood" class="block text-sm text-gray-500">Bairro:</label>
+                        <input value="<%= userData.address.neighborhood ?? "Não definido"%>" type="text" name="neighborhood" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.address.houseNumber !== 'undefined' && userData.address.houseNumber ? userData.address.houseNumber : '' %>" type="number" name="houseNumber" id="houseNumber" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="houseNumber" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Numero</label>
+                    <div class="block w-full">
+                        <label for="houseNumber" class="block text-sm text-gray-500">N:</label>
+                        <input value="<%= userData.address.houseNumber ?? "Não definido"%>" type="number" name="houseNumber" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.address.city !== 'undefined' && userData.address.city ? userData.address.city : '' %>" type="text" name="city" id="city" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="city" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Cidade</label>
+                    <div class="block w-full">
+                        <label for="city" class="block text-sm text-gray-500">Cidade:</label>
+                        <input value="<%= userData.address.city ?? "Não definido"%>" type="text" name="city" class="w-full px-4  border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%= typeof userData.address.uf !== 'undefined' && userData.address.uf ? userData.address.uf : '' %>" type="text" name="uf" id="uf" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                        <label for="uf" class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">UF</label>
+                    <div class="block w-full">
+                        <label for="uf" class="block text-sm text-gray-500">UF:</label>
+                        <input value="<%= userData.address.uf ?? "Não definido"%>" type="text" name="uf" class="w-full px-4  border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
-      
+
                 </div>
 
-                <h2 class="text-gray-600 font-semibold text-lg  mb-5">Foto 3x4</h2>
-                <div class="mb-5 grid grid-cols-3 gap-x-10">
-                    <!-- <div style="background-image: url('/default-placeholder.png');" id="imageContainer" class="border-dashed border border-gray-400 w-36 h-48 bg-center bg-cover bg-no-repeat">
-                        <input type="file" name="image" id="photo" class="w-full h-full opacity-0" accept="image/*">
-                    </div> -->
-                    
+                <h2 class="text-gray-600 font-semibold text-lg  mt-10 m-auto text-center">Imagem do Cadastrado</h2>
+                <hr><br>
+                <div class="mb-5  gap-x-10 gap-y-5">
+                    <img src="/images/<%= userData.image ?? "Não definido"%>" alt="" class="shadow-md w-72 m-auto mb-5 object-cover">
+                    <div class="text-md bg-gray-200 border-2 border-gray-500 active:border-blue-500  px-4 w-48 h-10 py-2 rounded-lg text-gray-600 relative m-auto"> 
+                        <span class="text-sm w-full h-ful flex items-center justify-center">Selecione uma imagem</span>   
+                        <input type="file" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">
+                    </div>
                 </div>
-                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 ml-auto block focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">ATUALIZAR</button>
+
+
+                <hr>
+                <section class="mb-10" id="containerDependents">
+                    <% userData.dependents.forEach(e => { %>
+                        <div class="border my-5 shadow-md px-4 py-2">
+                            <!-- Controles -->
+                            <div class="flex items-center justify-between w-full  mb-10">
+                              <span class="text-gray-600 text-lg">Dependente:</span>
+                              <button type="button" onclick="removeDependent(this)" class="px-4 py-1 text-white rounded-md hover:shadow-md bg-red-500 hover:bg-red-600">Remover</button>
+                            </div>
+                        
+                            <!-- Formulario de dependente -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-5">
+                              <div class="block w-full">
+                                <label for="" class="block text-sm text-gray-500">Nome:  <span class="text-red-500">*</span></label>
+                                <input value="<%= e.name ?? "Não definido"%>"  type="text" name="name_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+                              </div>
+                              <div class="block w-full">
+                                <label for="" class="block text-sm text-gray-500">RG:</label>
+                                <input value="<%= e.rg ?? "Não definido"%>" type="text" name="rg_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+                              </div>
+                              <div class="block w-full">
+                                <label for="" class="block text-sm text-gray-500">CPF:</label>
+                                <input value="<%= e.cpf ?? "Não definido"%>" type="text" name="cpf_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+                              </div>
+                              <div class="block w-full">
+                                <label required for="" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500">*</span></label>
+                                <input value="<%= e.dateOfBirth ?? "Não definido"%>" type="text" name="dateOfBirth_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+                              </div>
+                              <div class="block w-full">
+                                <label for="" class="block text-sm text-gray-500">Imagem:</label>
+                                <div class="mb-5  gap-x-10 gap-y-5">
+                                    <img src="/images/<%= e.image ?? "Não definido"%>" alt="" class="shadow-md w-52 h-72  object-cover m-auto mb-5">
+                                    <div class="text-md bg-gray-200 border-2 border-gray-500 active:border-blue-500  px-4 w-48 h-10 py-2 rounded-lg text-gray-600 relative m-auto"> 
+                                        <span class="text-sm w-full h-ful flex items-center justify-center">Selecione uma imagem</span>   
+                                        <input type="file" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          
+                        </div>
+                    <% }) %>
+                </section>
+                
+                <button onclick="addNewDependent()" type="button" class="text-white bg-green-600 hover:bg-green-700  block focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">ADICIONAR DEPENDENTE</button>
+                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 ml-auto block focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">CADASTRAR</button>
             </form>
             
         </main>
@@ -95,111 +149,27 @@
     </section>
 </body>
 </html>
+<script src="/js/editRegistration.js"></script>
 
 
 <!-- por imagem no input -->
 <script>
     // Selecione o input de arquivo
-    const inputFile = document.getElementById('photo');
+    // const inputFile = document.getElementById('photo');
 
-    // Adicione um ouvinte de evento de mudança ao input de arquivo
-    inputFile.addEventListener('change', function(event) {
-        // Verifique se há um arquivo selecionado
-        if (this.files && this.files[0]) {
-            // Crie um objeto URL para a imagem selecionada
-            const imageUrl = URL.createObjectURL(this.files[0]);
+    // // Adicione um ouvinte de evento de mudança ao input de arquivo
+    // inputFile.addEventListener('change', function(event) {
+    //     // Verifique se há um arquivo selecionado
+    //     if (this.files && this.files[0]) {
+    //         // Crie um objeto URL para a imagem selecionada
+    //         const imageUrl = URL.createObjectURL(this.files[0]);
             
-            // Selecione a div do contêiner de imagem
-            const imageContainer = document.getElementById('imageContainer');
+    //         // Selecione a div do contêiner de imagem
+    //         const imageContainer = document.getElementById('imageContainer');
             
-            // Defina o background da div com a imagem selecionada
-            imageContainer.style.backgroundImage = `url(${imageUrl})`;
-        }
-    });
+    //         // Defina o background da div com a imagem selecionada
+    //         imageContainer.style.backgroundImage = `url(${imageUrl})`;
+    //     }
+    // });
 </script>
 
-<!-- enviar formulario -->
-<script>
-document.getElementById('formCreate').addEventListener('submit', function(event) {
-    event.preventDefault(); // Evita o envio padrão do formulário
-
-
-    // Extrai a imagem selecionada
-    var imageFile = document.getElementById('photo').files[0];
-
-    // Cria um novo FormData
-    var formData = new FormData();
-
-    // Adiciona a imagem ao FormData com o nome correto do campo ('image')
-    formData.append('image', imageFile);
-
-    // Adiciona os outros campos do formulário ao FormData (certifique-se de adicionar todos os campos necessários)
-    formData.append('name', document.getElementById('name').value);
-    formData.append('rg', document.getElementById('rg').value);
-    formData.append('cpf', document.getElementById('cpf').value);
-    formData.append('tel', document.getElementById('tel').value);
-    formData.append('dateOfBirth', document.getElementById('dateOfBirth').value);
-    formData.append('cep', document.getElementById('cep').value);
-    formData.append('publicPlace', document.getElementById('publicPlace').value);
-    formData.append('neighborhood', document.getElementById('neighborhood').value);
-    formData.append('houseNumber', document.getElementById('houseNumber').value);
-    formData.append('city', document.getElementById('city').value);
-    formData.append('uf', document.getElementById('uf').value);
-    formData.append('email', document.getElementById('email').value);
-    formData.append('whatsapp', document.getElementById('whatsapp').checked);
-
- 
-
-
-    // Envio da requisição POST para o endpoint /user/create
-    fetch('/user/updateUser/"<%= userData._id %>"', {
-        method: 'PATCH',
-        body: formData // Envia FormData, não JSON
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao enviar formulário');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data);
-        window.location.href = '/lista-de-pessoas'
-        // Aqui você pode lidar com a resposta do servidor, se necessário
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        // Aqui você pode lidar com erros de requisição ou do servidor
-    });
-});
-
-</script>
-
-<!-- consultar cep -->
-<script>
-    document.getElementById('cep').addEventListener('blur', () => {
-    var cep = document.getElementById('cep').value;
-    var url = `https://viacep.com.br/ws/${cep}/json/`;
-    
-    fetch(url)
-    .then(response => response.json())
-    .then(data => {
-        if (data.erro) {
-            console.log('CEP não encontrado')
-        } else {
-            data.logradouro ? document.getElementById('publicPlace').value = data.logradouro : ''
-            data.bairro ? document.getElementById('neighborhood').value = data.bairro : ''
-            data.localidade ? document.getElementById('city').value = data.localidade : ''
-            data.uf ? document.getElementById('uf').value = data.uf : ''
-
-            
-
-            console.log(data)
-           
-        }
-    })
-    .catch(error => console.error('Erro ao consultar CEP:', error));
-})
-
-   
-</script>

@@ -11,3 +11,4 @@ router.get('/editar-cadastro', indexController.editRegistration)
 
 
 module.exports = router
+
