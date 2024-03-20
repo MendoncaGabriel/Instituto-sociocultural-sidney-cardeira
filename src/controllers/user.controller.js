@@ -5,17 +5,66 @@ const userSchema = require('../database/schema/usuario.schema')
 //CREATE
 exports.create = async (req, res) => {
     try{
-        const {name, rg, cpf, tel, dateOfBirth, cep, publicPlace, neighborhood, houseNumber, city, uf, email, whatsapp} = req.body
-        const user = {name, whatsapp: Boolean(whatsapp), email, rg, cpf, tel, dateOfBirth, address:{cep, publicPlace, neighborhood, houseNumber, city, uf}}
-        
-        
-        // Verifica se há um arquivo de imagem na requisição
-        if (req.files.length > 0) {
-            user.image = req.files[0].filename; 
-        }
+        const data = req.body
 
-        const newUser = new userSchema(user)
- 
+        let userObject = {
+            name: "Nome do Usuário",
+            whatsapp: false,
+            email: "email@example.com",
+            activeUser: true,
+            image: "",
+            rg: "123456789",
+            cpf: "987654321",
+            tel: "123456789",
+            dateOfBirth: "01/01/2000",
+            address: {
+              publicPlace: "Nome da Rua",
+              cep: "12345678",
+              neighborhood: "Nome do Bairro",
+              city: "Nome da Cidade",
+              uf: "UF",
+              country: "País",
+              houseNumber: "123"
+            },
+            dependents: [],
+            createdAt: new Date()
+        };
+
+        //agrupando dependentes em array de objetos
+        for (let i = 0; i < data.name_dependent.length; i++) {
+            userObject.dependents.push({
+                name: data.name_dependent[i],
+                rg: data.rg_dependent[i],
+                cpf: data.cpf_dependent[i],
+                dateOfBirth: data.dateOfBirth_dependent[i],
+                image: "-"
+            });
+        }
+        console.log(userObject)
+
+
+        // SALVANDO IMAGENS
+        if (req.files && req.files.length > 0) {
+            console.log(`Recebendo ${req.files.length} arquivos`);
+        
+            // Atualize a imagem do usuário principal
+            userObject.image = req.files[0].filename;
+        
+            // Atualize as imagens dos dependentes
+            for (let i = 1; i < req.files.length; i++) {
+                // Verifica se há um dependente para cada arquivo enviado
+                if (userObject.dependents[i - 1]) {
+                    userObject.dependents[i - 1].image = req.files[i].filename;
+                } else {
+                    console.error(`Não há dependente correspondente para o arquivo ${req.files[i].filename}`);
+                }
+            }
+        }
+        
+  
+          
+
+        const newUser = new userSchema(userObject)
         const savedUser = await newUser.save()
 
         res.status(200).json(savedUser)
