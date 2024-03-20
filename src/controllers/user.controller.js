@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path')
 const userSchema = require('../database/schema/usuario.schema')
 
+//CREATE
 exports.create = async (req, res) => {
     try{
         const {name, rg, cpf, tel, dateOfBirth, cep, publicPlace, neighborhood, houseNumber, city, uf, email, whatsapp} = req.body
@@ -9,13 +10,14 @@ exports.create = async (req, res) => {
         
         
         // Verifica se há um arquivo de imagem na requisição
-        if (req.file) {
-            user.image = req.file.filename; 
+        if (req.files.length > 0) {
+            user.image = req.files[0].filename; 
         }
+
         const newUser = new userSchema(user)
+ 
         const savedUser = await newUser.save()
-        console.log('Objeto do usuario', user)
-        console.log('Usuario salvo', savedUser)
+
         res.status(200).json(savedUser)
     }
     catch(err){
@@ -28,8 +30,9 @@ exports.create = async (req, res) => {
         console.log(err)
         res.status(400).json(err)
     }
-}
+};
 
+//UPDATE
 exports.addNewDependent = async (req, res) => {
     const id = req.params.id;
     const { name, rg, cpf, dateOfBirth } = req.body;
@@ -109,6 +112,96 @@ exports.updateDependentData = async (req, res) => {
     }
 };
 
+exports.updateUser = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+
+        // Verifica se um arquivo foi enviado
+        if (req.file) {
+            data.image = req.file.filename; 
+            console.log('Nova imagem:', req.file.filename )
+
+            // Verificar se atualizou a foto
+            const dataUser = await userSchema.findById(id)
+            if (dataUser.image && dataUser.image !== req.file.filename) {
+                // Apagar imagem anterior
+                const filePath = path.join(__dirname, '..', 'public', 'images', dataUser.image);
+
+                // Verifica se o arquivo existe antes de tentar apagá-lo
+                fs.access(filePath, fs.constants.F_OK, (err) => {
+                    if (err) {
+                        console.error('O arquivo não existe:', err);
+                        return;
+                    }
+
+                    // Se o arquivo existe, tenta apagá-lo
+                    fs.unlink(filePath, (err) => {
+                        if (err) {
+                            console.error('Erro ao apagar o arquivo:', err);
+                            return;
+                        }
+                        console.log('Arquivo apagado com sucesso!');
+                    });
+                });
+                console.log('Imagem antiga apagada:', dataUser.image)
+            }
+        }
+
+        // Adicione a opção { new: true } para retornar o usuário atualizado
+        const updatedUser = await userSchema.findByIdAndUpdate(id, data, { new: true });
+
+        // Verifique se o usuário foi encontrado e atualizado com sucesso
+        if (!updatedUser) {
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        res.status(400).json({ message: "Ocorreu um erro ao atualizar dados do usuário", error: err });
+    }
+};
+
+exports.activateUser = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Atualizar o usuário no banco de dados
+        const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: true }, { new: true });
+
+        // Verificar se o usuário foi encontrado e atualizado com sucesso
+        if (!updatedUser) {
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+
+        res.status(200).json({msg:"Usuario ativo", updatedUser});
+    } catch (err) {
+        console.error("Erro ao desativar usuário:", err);
+        res.status(500).json({ message: "Ocorreu um erro ao ativar usuário" });
+    }
+};
+
+exports.disactivateUser = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Atualizar o usuário no banco de dados
+        const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: false }, { new: true });
+
+        // Verificar se o usuário foi encontrado e atualizado com sucesso
+        if (!updatedUser) {
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+
+        res.status(200).json({msg:"Usuario ativo", updatedUser});
+    } catch (err) {
+        console.error("Erro ao desativar usuário:", err);
+        res.status(500).json({ message: "Ocorreu um erro ao ativar usuário" });
+    }
+};
+
+
+//GET
 exports.searchUserById = async (id) => {
     try{
         const user = await userSchema.findById(id)
@@ -117,7 +210,7 @@ exports.searchUserById = async (id) => {
     catch(err){
         throw err;
     }
-}
+};
 
 exports.getListOfUsers = async (page, limit) => {
     try {
@@ -193,90 +286,4 @@ exports.searchUsersByActive = async (req, res) => {
     }
 };
 
-exports.updateUser = async (req, res) => {
-    try {
-        const id = req.params.id;
-        const data = req.body;
 
-        // Verifica se um arquivo foi enviado
-        if (req.file) {
-            data.image = req.file.filename; 
-            console.log('Nova imagem:', req.file.filename )
-
-            // Verificar se atualizou a foto
-            const dataUser = await userSchema.findById(id)
-            if (dataUser.image && dataUser.image !== req.file.filename) {
-                // Apagar imagem anterior
-                const filePath = path.join(__dirname, '..', 'public', 'images', dataUser.image);
-
-                // Verifica se o arquivo existe antes de tentar apagá-lo
-                fs.access(filePath, fs.constants.F_OK, (err) => {
-                    if (err) {
-                        console.error('O arquivo não existe:', err);
-                        return;
-                    }
-
-                    // Se o arquivo existe, tenta apagá-lo
-                    fs.unlink(filePath, (err) => {
-                        if (err) {
-                            console.error('Erro ao apagar o arquivo:', err);
-                            return;
-                        }
-                        console.log('Arquivo apagado com sucesso!');
-                    });
-                });
-                console.log('Imagem antiga apagada:', dataUser.image)
-            }
-        }
-
-        // Adicione a opção { new: true } para retornar o usuário atualizado
-        const updatedUser = await userSchema.findByIdAndUpdate(id, data, { new: true });
-
-        // Verifique se o usuário foi encontrado e atualizado com sucesso
-        if (!updatedUser) {
-            return res.status(404).json({ message: "Usuário não encontrado" });
-        }
-
-        res.status(200).json(updatedUser);
-    } catch (err) {
-        res.status(400).json({ message: "Ocorreu um erro ao atualizar dados do usuário", error: err });
-    }
-};
-
-exports.disactivateUser = async (req, res) => {
-    try {
-        const id = req.params.id;
-
-        // Atualizar o usuário no banco de dados
-        const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: false }, { new: true });
-
-        // Verificar se o usuário foi encontrado e atualizado com sucesso
-        if (!updatedUser) {
-            return res.status(404).json({ message: "Usuário não encontrado" });
-        }
-
-        res.status(200).json({msg:"Usuario desativado", updatedUser});
-    } catch (err) {
-        console.error("Erro ao desativar usuário:", err);
-        res.status(500).json({ message: "Ocorreu um erro ao desativar usuário" });
-    }
-};
-
-exports.activateUser = async (req, res) => {
-    try {
-        const id = req.params.id;
-
-        // Atualizar o usuário no banco de dados
-        const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: true }, { new: true });
-
-        // Verificar se o usuário foi encontrado e atualizado com sucesso
-        if (!updatedUser) {
-            return res.status(404).json({ message: "Usuário não encontrado" });
-        }
-
-        res.status(200).json({msg:"Usuario ativo", updatedUser});
-    } catch (err) {
-        console.error("Erro ao desativar usuário:", err);
-        res.status(500).json({ message: "Ocorreu um erro ao ativar usuário" });
-    }
-};

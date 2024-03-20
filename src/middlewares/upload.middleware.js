@@ -12,8 +12,10 @@ const storage = multer.diskStorage({
   }
 });
 
-// Middleware para upload de arquivo
-module.exports = multer({ storage: storage });
+// Middleware para upload de arquivo unico
+// module.exports = multer({ storage: storage });
 
+// Middleware para upload de multiplos arquivos
+module.exports = multer({ storage: storage }).array('images', 5); // 'images' é o nome do campo do formulário para as imagens, e 5 é o número máximo de arquivos permitidos (ajuste conforme necessário)
 
 
