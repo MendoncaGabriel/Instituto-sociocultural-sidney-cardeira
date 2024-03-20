@@ -94,7 +94,6 @@ exports.updateDependentData = async (req, res) => {
             try {
                 const filePath = path.join(__dirname, '..', 'public', 'images', dependent.image);
                 fs.unlinkSync(filePath);
-                console.log('Imagem antiga apagada:', dependent.image);
             } catch (err) {
                 console.error('Erro ao apagar a imagem antiga:', err);
             }
@@ -120,7 +119,7 @@ exports.updateUser = async (req, res) => {
         // Verifica se um arquivo foi enviado
         if (req.file) {
             data.image = req.file.filename; 
-            console.log('Nova imagem:', req.file.filename )
+ 
 
             // Verificar se atualizou a foto
             const dataUser = await userSchema.findById(id)
@@ -141,10 +140,10 @@ exports.updateUser = async (req, res) => {
                             console.error('Erro ao apagar o arquivo:', err);
                             return;
                         }
-                        console.log('Arquivo apagado com sucesso!');
+
                     });
                 });
-                console.log('Imagem antiga apagada:', dataUser.image)
+            
             }
         }
 

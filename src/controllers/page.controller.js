@@ -23,9 +23,7 @@ exports.listOfPeoples = async (req, res) => {
 
 exports.personProfile = async (req, res) => {
     const id = req.query.id;
-   
     const userData = await userController.searchUserById(id);
-    console.log(userData)
     res.render('personProfile', {page: 'personProfile', userData})
 }
 
