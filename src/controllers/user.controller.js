@@ -8,45 +8,45 @@ exports.create = async (req, res) => {
         const data = req.body
 
         let userObject = {
-            name: "Nome do Usuário",
-            whatsapp: false,
-            email: "email@example.com",
+            name: data.name ?? '',
+            whatsapp: data.whatsapp && data.whatsapp == 'on' ? true : false,
+            email: data.email ?? '',
             activeUser: true,
             image: "",
-            rg: "123456789",
-            cpf: "987654321",
-            tel: "123456789",
-            dateOfBirth: "01/01/2000",
+            rg: data.rg ?? '',
+            cpf: data.cpf ?? '',
+            tel: data.tel ?? '',
+            dateOfBirth: data.dateOfBirth ?? '',
             address: {
-              publicPlace: "Nome da Rua",
-              cep: "12345678",
-              neighborhood: "Nome do Bairro",
-              city: "Nome da Cidade",
-              uf: "UF",
-              country: "País",
-              houseNumber: "123"
+              publicPlace: data.publicPlace ?? '',
+              cep: data.cep ?? '',
+              neighborhood: data.neighborhood ?? '',
+              city: data.city ?? '',
+              uf: data.uf ?? '',
+              country: data.country ?? '',
+              houseNumber: data.houseNumber ?? ''
             },
             dependents: [],
             createdAt: new Date()
         };
 
-        //agrupando dependentes em array de objetos
-        for (let i = 0; i < data.name_dependent.length; i++) {
-            userObject.dependents.push({
-                name: data.name_dependent[i],
-                rg: data.rg_dependent[i],
-                cpf: data.cpf_dependent[i],
-                dateOfBirth: data.dateOfBirth_dependent[i],
-                image: "-"
-            });
-        }
-        console.log(userObject)
+        //AGRUPANDO DEPENDENTES EM ARRAY DE OBJETOS
+        if(data.name_dependent){
 
+            for (let i = 0; i < data.name_dependent.length; i++) {
+                userObject.dependents.push({
+                    name: data.name_dependent[i],
+                    rg: data.rg_dependent[i],
+                    cpf: data.cpf_dependent[i],
+                    dateOfBirth: data.dateOfBirth_dependent[i],
+                    image: "-"
+                });
+            }
+        }
 
         // SALVANDO IMAGENS
         if (req.files && req.files.length > 0) {
-            console.log(`Recebendo ${req.files.length} arquivos`);
-        
+
             // Atualize a imagem do usuário principal
             userObject.image = req.files[0].filename;
         
@@ -61,12 +61,9 @@ exports.create = async (req, res) => {
             }
         }
         
-  
-          
 
         const newUser = new userSchema(userObject)
         const savedUser = await newUser.save()
-
         res.status(200).json(savedUser)
     }
     catch(err){
@@ -81,134 +78,66 @@ exports.create = async (req, res) => {
     }
 };
 
-//UPDATE
-exports.addNewDependent = async (req, res) => {
-    const id = req.params.id;
-    const { name, rg, cpf, dateOfBirth } = req.body;
-
-    try {
-        const user = await userSchema.findById(id);
-        if (!user) {
-            return res.status(404).json({ msg: 'Usuário não encontrado' });
-        }
-
-        // Cria um novo dependente
-        const newDependent = {
-            name,
-            rg,
-            cpf,
-            dateOfBirth
-        };
-
-        if (req.file) {
-            newDependent.image = req.file.filename; 
-        }
-
-        // Adiciona o dependente ao array de dependentes do usuário
-        user.dependents.push(newDependent);
-
-        // Salva as alterações no usuário
-        await user.save();
-
-        return res.status(200).json({ msg: `Dependente adicionado com sucesso ao usuário ${user.name}`, newDependent });
-    } catch (err) {
-        return res.status(500).json({ error: err.message });
-    }
-};
-
-exports.updateDependentData = async (req, res) => {
-    const dependentId = req.params.id;
-    const newData = req.body;
-
-    if (req.file) {
-        newData.image = req.file.filename;
-    }
-
-    try {
-        // Encontre o usuário que possui o dependente com o ID fornecido
-        const user = await userSchema.findOne({ "dependents._id": dependentId });
-        if (!user) {
-            return res.status(404).json({ msg: 'Usuário não encontrado' });
-        }
-
-        // Encontre o dependente dentro do array de dependentes do usuário
-        const dependent = user.dependents.id(dependentId);
-        if (!dependent) {
-            return res.status(404).json({ msg: 'Dependente não encontrado' });
-        }
-
-        // se houver uma imagem antiga e uma nova imagem, apague a antiga
-        if (dependent.image && req.file) {
-            // Apagar imagem anterior de forma síncrona
-            try {
-                const filePath = path.join(__dirname, '..', 'public', 'images', dependent.image);
-                fs.unlinkSync(filePath);
-            } catch (err) {
-                console.error('Erro ao apagar a imagem antiga:', err);
-            }
-        }
-
-        // Atualize os dados do dependente com os novos dados
-        Object.assign(dependent, newData);
-
-        // Salve as alterações no usuário
-        await user.save();
-
-        return res.status(200).json({ msg: 'Dados do dependente atualizados com sucesso', dependent });
-    } catch (err) {
-        return res.status(500).json({ error: err.message });
-    }
-};
 
 exports.updateUser = async (req, res) => {
     try {
         const id = req.params.id;
         const data = req.body;
+        const dataUser = await userSchema.findById(id);
 
-        // Verifica se um arquivo foi enviado
-        if (req.file) {
-            data.image = req.file.filename; 
- 
+        let userObject = {
+            name: data.name ?? '',
+            whatsapp: data.whatsapp && data.whatsapp == 'on' ? true : false,
+            email: data.email ?? '',
+            activeUser: true,
+            rg: data.rg ?? '',
+            cpf: data.cpf ?? '',
+            tel: data.tel ?? '',
+            dateOfBirth: data.dateOfBirth ?? '',
+            address: {
+              publicPlace: data.publicPlace ?? '',
+              cep: data.cep ?? '',
+              neighborhood: data.neighborhood ?? '',
+              city: data.city ?? '',
+              uf: data.uf ?? '',
+              country: data.country ?? '',
+              houseNumber: data.houseNumber ?? ''
+            },
+            dependents: [],
+            createdAt: new Date()
+        };
 
-            // Verificar se atualizou a foto
-            const dataUser = await userSchema.findById(id)
-            if (dataUser.image && dataUser.image !== req.file.filename) {
-                // Apagar imagem anterior
-                const filePath = path.join(__dirname, '..', 'public', 'images', dataUser.image);
+        //AGRUPANDO DEPENDENTES EM ARRAY DE OBJETOS
+        if(data.name_dependent){
 
-                // Verifica se o arquivo existe antes de tentar apagá-lo
-                fs.access(filePath, fs.constants.F_OK, (err) => {
-                    if (err) {
-                        console.error('O arquivo não existe:', err);
-                        return;
-                    }
-
-                    // Se o arquivo existe, tenta apagá-lo
-                    fs.unlink(filePath, (err) => {
-                        if (err) {
-                            console.error('Erro ao apagar o arquivo:', err);
-                            return;
-                        }
-
-                    });
+            for (let i = 0; i < data.name_dependent.length; i++) {
+                userObject.dependents.push({
+                    name: data.name_dependent[i],
+                    rg: data.rg_dependent[i],
+                    cpf: data.cpf_dependent[i],
+                    dateOfBirth: data.dateOfBirth_dependent[i],
                 });
-            
             }
         }
 
-        // Adicione a opção { new: true } para retornar o usuário atualizado
-        const updatedUser = await userSchema.findByIdAndUpdate(id, data, { new: true });
 
-        // Verifique se o usuário foi encontrado e atualizado com sucesso
+
+        // Atualiza os dados do usuário
+        const updatedUser = await userSchema.findByIdAndUpdate(id, userObject, { new: true });
+
+        // Verifica se o usuário foi encontrado e atualizado com sucesso
         if (!updatedUser) {
             return res.status(404).json({ message: "Usuário não encontrado" });
         }
 
         res.status(200).json(updatedUser);
     } catch (err) {
+        // Trata erros durante a atualização do usuário
+        console.error('Erro ao atualizar dados do usuário:', err);
         res.status(400).json({ message: "Ocorreu um erro ao atualizar dados do usuário", error: err });
     }
 };
+
 
 exports.activateUser = async (req, res) => {
     try {

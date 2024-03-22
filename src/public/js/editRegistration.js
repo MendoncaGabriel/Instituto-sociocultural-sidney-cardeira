@@ -1,25 +1,27 @@
 
 
-const form = document.querySelector('#formCreate')
 
-form.addEventListener('submit', event => {
-  event.preventDefault();
+function updateUser(id){
+  console.log(id)
+  
+  const form = document.querySelector('#formCreate')
   const formData = new FormData(form); 
   
 
-  fetch('/user/create', {
+  fetch('/user/updateUser/' + id, {
     method: 'POST',
     body: formData 
   })
   .then(res => res.json())
   .then(data => {
     console.log(data);
-    window.location.href = '/lista-de-pessoas'
+    window.location.href = '/perfil?id=' + id
   })
   .catch(error => {
     console.error('Erro ao enviar formulário:', error);
   });
-});
+
+}
 
 function scrollToBottom() {
   document.querySelector('main').scrollTo({
@@ -73,8 +75,6 @@ function addNewDependent() {
 
   scrollToBottom();
 }
-
-
 
 function removeDependent(element){
   element.parentNode.parentNode.remove()
