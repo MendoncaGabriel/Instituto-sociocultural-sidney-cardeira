@@ -13,7 +13,7 @@ exports.listOfPeoples = async (req, res) => {
         const page = parseInt(req.query.page) || 1; // Página solicitada, padrão é 1
         const limit = parseInt(req.query.limit) || 20; // Quantidade de usuários por página
         
-        const listUsers = await userController.getListOfUsers(page, limit);
+        const listUsers = await userController.getListOfUsers(page, limit, true);
         
         res.render('listOfPeoples', { page: 'listOfPeoples', users: listUsers.users });
     } catch (err) {

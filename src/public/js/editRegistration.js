@@ -1,6 +1,3 @@
-
-
-
 function updateUser(id){
   console.log(id)
   
@@ -105,12 +102,43 @@ cep.addEventListener('blur', () => {
 })
 
 
-function deactivateRegistration(){
+function deactivateRegistration(id){
   const res= prompt('Desativar usuario?: SIM / NÃO')
 
   if(res.toLocaleLowerCase() == 'sim'){
 
-  }else{
-    console.log
+    fetch('/user/disactivateUser/' + id, {
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      window.location.href = '/lista-de-pessoas'
+    })
+    .catch(error => {
+      console.error('Erro ao enviar formulário:', error);
+    });
+
   }
 }
+
+
+
+const inputFile = document.getElementById('inputFile');
+// Obtém referência para o elemento img
+const previewImage = document.getElementById('previewImage');
+
+// Adiciona um evento de mudança ao input file
+inputFile.addEventListener('change', function() {
+    // Verifica se algum arquivo foi selecionado
+    if (this.files && this.files[0]) {
+        // Cria um objeto URL para representar o arquivo selecionado
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Define o src da imagem para a URL do arquivo
+            previewImage.src = e.target.result;
+        }
+        // Lê o arquivo como uma URL
+        reader.readAsDataURL(this.files[0]);
+    }
+});

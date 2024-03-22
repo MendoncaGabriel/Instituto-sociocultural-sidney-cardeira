@@ -83,7 +83,6 @@ exports.updateUser = async (req, res) => {
     try {
         const id = req.params.id;
         const data = req.body;
-        const dataUser = await userSchema.findById(id);
 
         let userObject = {
             name: data.name ?? '',
@@ -103,23 +102,36 @@ exports.updateUser = async (req, res) => {
               country: data.country ?? '',
               houseNumber: data.houseNumber ?? ''
             },
-            dependents: [],
             createdAt: new Date()
         };
 
-        //AGRUPANDO DEPENDENTES EM ARRAY DE OBJETOS
-        if(data.name_dependent){
 
-            for (let i = 0; i < data.name_dependent.length; i++) {
-                userObject.dependents.push({
-                    name: data.name_dependent[i],
-                    rg: data.rg_dependent[i],
-                    cpf: data.cpf_dependent[i],
-                    dateOfBirth: data.dateOfBirth_dependent[i],
+        if(req.files[0].filename){
+            userObject.image = req.files[0].filename
+
+            const oldUser = await userSchema.findById(id)
+            if(oldUser.image ){
+                const imagePath = path.join(__dirname, '../', 'public', 'images', oldUser.image);
+
+                // Verifica se o arquivo existe
+                fs.access(imagePath, fs.constants.F_OK, (err) => {
+                    if (!err) {
+                        // O arquivo existe, então apaga ele
+                        fs.unlink(imagePath, (err) => {
+                            if (err) {
+                                console.error('Erro ao apagar a imagem:', err);
+                                return;
+                            }
+                            console.log('Imagem apagada com sucesso!');
+                        });
+                    } else {
+                        console.error('A imagem não existe ou não pode ser acessada:', err);
+                    }
                 });
             }
-        }
 
+            
+        }
 
 
         // Atualiza os dados do usuário
@@ -189,10 +201,10 @@ exports.searchUserById = async (id) => {
     }
 };
 
-exports.getListOfUsers = async (page, limit) => {
+exports.getListOfUsers = async (page, limit, active) => {
     try {
         const skip = (page - 1) * limit;
-        const users = await userSchema.find().skip(skip).limit(limit);
+        const users = await userSchema.find({activeUser: active || true}).skip(skip).limit(limit);
         
         return {
             currentPage: page,

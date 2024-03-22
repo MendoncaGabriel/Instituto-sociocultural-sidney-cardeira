@@ -16,7 +16,7 @@
             
             
             <form id="formCreate" class="mx-auto bg-white p-10 w-full" enctype="multipart/form-data">
-                <button onclick="deactivateRegistration()" type="button" class="px-8 py-2 mb-10 bg-red-600 hover:bg-red-500 font-semibold text-white">DESATIVAR CADASTRO</button>
+                <button onclick="deactivateRegistration('<%= userData._id %>')" type="button" class="px-8 py-2 mb-10 bg-red-600 hover:bg-red-500 font-semibold text-white">DESATIVAR CADASTRO</button>
 
                 <h2 class="text-gray-600 font-semibold text-lg ">Informações basicas</h2>
                 <hr><br>
@@ -88,60 +88,17 @@
                 <h2 class="text-gray-600 font-semibold text-lg  mt-10 m-auto text-center">Imagem do Cadastrado</h2>
                 <hr><br>
                 <div class="mb-5  gap-x-10 gap-y-5">
-                    <img src="/images/<%= userData.image ?? "Não definido"%>" alt="" class="shadow-md w-72 m-auto mb-5 object-cover">
+                    <img id="previewImage" src="/images/<%= userData.image ?? "Não definido"%>" alt="" class="shadow-md w-72 m-auto mb-5 object-cover">
                     <div class="text-md bg-gray-200 border-2 border-gray-500 active:border-blue-500  px-4 w-48 h-10 py-2 rounded-lg text-gray-600 relative m-auto"> 
                         <span class="text-sm w-full h-ful flex items-center justify-center">Selecione uma imagem</span>   
-                        <input type="file" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">
+                        <input id="inputFile" type="file" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">
                     </div>
                 </div>
 
 
-                <hr>
-                <section class="mb-10" id="containerDependents">
-                    <% userData.dependents.forEach(e => { %>
-                        <div class="border my-5 shadow-md px-4 py-2">
-                            <!-- Controles -->
-                            <div class="flex items-center justify-between w-full  mb-10">
-                              <span class="text-gray-600 text-lg">Dependente:</span>
-                              <button type="button" onclick="removeDependent(this)" class="px-4 py-1 text-white rounded-md hover:shadow-md bg-red-500 hover:bg-red-600">Remover</button>
-                            </div>
-                        
-                            <!-- Formulario de dependente -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-5">
-                              <div class="block w-full">
-                                <label for="" class="block text-sm text-gray-500">Nome:  <span class="text-red-500">*</span></label>
-                                <input value="<%= e.name ?? "Não definido"%>"  type="text" name="name_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
-                              </div>
-                              <div class="block w-full">
-                                <label for="" class="block text-sm text-gray-500">RG:</label>
-                                <input value="<%= e.rg ?? "Não definido"%>" type="text" name="rg_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
-                              </div>
-                              <div class="block w-full">
-                                <label for="" class="block text-sm text-gray-500">CPF:</label>
-                                <input value="<%= e.cpf ?? "Não definido"%>" type="text" name="cpf_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
-                              </div>
-                              <div class="block w-full">
-                                <label required for="" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500">*</span></label>
-                                <input value="<%= e.dateOfBirth ?? "Não definido"%>" type="text" name="dateOfBirth_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
-                              </div>
-                              <div class="block w-full">
-                                <label for="" class="block text-sm text-gray-500">Imagem:</label>
-                                <div class="mb-5  gap-x-10 gap-y-5">
-                                    <img src="/images/<%= e.image ?? "Não definido"%>" alt="" class="shadow-md w-52 h-72  object-cover m-auto mb-5">
-                                    <div class="text-md bg-gray-200 border-2 border-gray-500 active:border-blue-500  px-4 w-48 h-10 py-2 rounded-lg text-gray-600 relative m-auto"> 
-                                        <span class="text-sm w-full h-ful flex items-center justify-center">Selecione uma imagem</span>   
-                                        <input type="file" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">
-                                    </div>
-                                </div>
-                              </div>
-                            </div>
-                          
-                        </div>
-                    <% }) %>
-                </section>
                 
-                <button onclick="addNewDependent()" type="button" class="text-white bg-green-600 hover:bg-green-700  block focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">ADICIONAR DEPENDENTE</button>
-                <button onclick="updateUser('<%= userData._id %>')" type="button" class="text-white bg-blue-600 hover:bg-blue-700 ml-auto block focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">CADASTRAR</button>
+                
+                <button onclick="updateUser('<%= userData._id %>')" type="button" class="text-white bg-blue-600 hover:bg-blue-700 ml-auto block focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">SALVAR ATUALIZAÇÃO</button>
             </form>
             
         </main>
@@ -151,25 +108,4 @@
 </html>
 <script src="/js/editRegistration.js"></script>
 
-
-<!-- por imagem no input -->
-<script>
-    // Selecione o input de arquivo
-    // const inputFile = document.getElementById('photo');
-
-    // // Adicione um ouvinte de evento de mudança ao input de arquivo
-    // inputFile.addEventListener('change', function(event) {
-    //     // Verifique se há um arquivo selecionado
-    //     if (this.files && this.files[0]) {
-    //         // Crie um objeto URL para a imagem selecionada
-    //         const imageUrl = URL.createObjectURL(this.files[0]);
-            
-    //         // Selecione a div do contêiner de imagem
-    //         const imageContainer = document.getElementById('imageContainer');
-            
-    //         // Defina o background da div com a imagem selecionada
-    //         imageContainer.style.backgroundImage = `url(${imageUrl})`;
-    //     }
-    // });
-</script>
 
