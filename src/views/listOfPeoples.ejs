@@ -17,19 +17,19 @@
             <section class="bg-white p-4 text-gray-500 text-sm flex  items-end px-10">
                 <div class="flex space-x-4">
                     <div>
-                        <label for="">Nome:</label><br>
-                        <input type="text" class="px-4 py-2 focus:outline-none border">
+                        <label for="name">Nome:</label><br>
+                        <input id="name" type="text" class="px-4 py-2 focus:outline-none border">
                     </div>
                     <div>
-                        <label for="">Telefone:</label><br>
-                        <input type="text" class="px-4 py-2 focus:outline-none border">
+                        <label for="tel">Telefone:</label><br>
+                        <input id="tel" type="text" class="px-4 py-2 focus:outline-none border">
                     </div>
                     <div>
-                        <label for="">CPF:</label><br>
-                        <input type="text" class="px-4 py-2 focus:outline-none border">
+                        <label for="cpf">CPF:</label><br>
+                        <input id="cpf" type="text" class="px-4 py-2 focus:outline-none border">
                     </div>
                 </div>
-                <button class="bg-blue-500 hover:bg-blue-600 flex-none hover:shadow-md text-white font-semibold px-4 py-0 block h-10 ml-5">FILTRAR</button>
+                <button onclick="filter()" class="bg-blue-500 hover:bg-blue-600 flex-none hover:shadow-md text-white font-semibold px-4 py-0 block h-10 ml-5">FILTRAR</button>
    
             </section>
             
@@ -71,10 +71,35 @@
                                         <%= e.name  %>
                                     </th>
                                     <td class="px-6 py-4 redirect">
-                                        <%= e.tel  %>
+                                        <% function formatarTelefone(telefone) {
+                                            // Remove todos os caracteres não numéricos
+                                            const numeros = telefone.replace(/\D/g, '');
+                                        
+                                            // Formata o telefone conforme necessário
+                                            if (numeros.length === 10) {
+                                                return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+                                            } else if (numeros.length === 11) {
+                                                return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                                            } else {
+                                                return telefone; // Retorna o número original se não for possível formatar
+                                            }
+                                        }
+                                         %>
+                                        <%= formatarTelefone(e.tel)  %>
                                     </td>
                                     <td class="px-6 py-4 redirect">
-                                        <%= e.cpf  %>
+
+                                        <% function formatarCPF(cpf) {
+                                            // Verifica se o CPF é válido
+                                            if (!cpf || cpf.length !== 11) {
+                                                return cpf; // Retorna o CPF original se não for válido
+                                            }
+                                        
+                                            // Formata o CPF com pontos e hífen
+                                            return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+                                        }
+                                         %>
+                                        <%= formatarCPF(e.cpf)  %>
                                     </td>
                                     <td class="px-6 py-4 redirect">
                                         <%= e.rg  %>
@@ -106,11 +131,4 @@
 </body>
 </html>
 
-
-<script>
-    document.querySelectorAll('.redirect').forEach((e)=>{
-        e.addEventListener('click', (e)=>{
-            window.location.href = `/perfil?id=${e.target.parentNode.id}`
-        })
-    })
-</script>
+<script src="/js/listOfPeoples.js"></script>

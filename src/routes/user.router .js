@@ -17,5 +17,6 @@ router.get('/searchUsersByActive/:active', userController.searchUsersByActive)
 router.get('/disactivateUser/:id', userController.disactivateUser)
 router.get('/activateUser/:id', userController.activateUser)
 router.get('/getListOfUsers/:page/:limit', userController.getListOfUsers)
+router.get('/getFilter/', userController.getFilter)
 
 module.exports = router

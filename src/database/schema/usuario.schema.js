@@ -65,6 +65,9 @@ const userSchema = new mongoose.Schema({
   rg: {
     type: String,
   },
+  sex:{
+    type: String
+  },
   cpf: {
     type: String,
   },

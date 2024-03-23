@@ -9,12 +9,13 @@ exports.create = async (req, res) => {
 
         let userObject = {
             name: data.name ?? '',
+            sex: data.sex ?? '',
             whatsapp: data.whatsapp && data.whatsapp == 'on' ? true : false,
             email: data.email ?? '',
             activeUser: true,
             image: "",
             rg: data.rg ?? '',
-            cpf: data.cpf ?? '',
+            cpf: data.cpf.replace(/\./g, '').replace(/-/g, '') ?? '',
             tel: data.tel ?? '',
             dateOfBirth: data.dateOfBirth ?? '',
             address: {
@@ -90,7 +91,7 @@ exports.updateUser = async (req, res) => {
             email: data.email ?? '',
             activeUser: true,
             rg: data.rg ?? '',
-            cpf: data.cpf ?? '',
+            cpf: data.cpf.replace(/\./g, '').replace(/-/g, '') ?? '',
             tel: data.tel ?? '',
             dateOfBirth: data.dateOfBirth ?? '',
             address: {
@@ -103,7 +104,9 @@ exports.updateUser = async (req, res) => {
               houseNumber: data.houseNumber ?? ''
             },
             createdAt: new Date()
-        };
+        }
+
+        data.sex ? userObject.sex = data.sex  : ''
 
 
         if(req.files[0].filename){
@@ -200,6 +203,37 @@ exports.searchUserById = async (id) => {
         throw err;
     }
 };
+
+exports.getFilter = async (req, res) => {
+    try {
+        let query = {};
+
+        if (req.query.name) {
+            const regex = new RegExp(req.query.name, 'i');
+            query.name = { $regex: regex };
+        }
+
+        if (req.query.tel) {
+            query.tel = req.query.tel;
+        }
+
+        if (req.query.cpf) {
+            const regexCPF = new RegExp(req.query.cpf, 'i');
+            query.cpf = { $regex: regexCPF };
+        }
+
+        const users = await userSchema.find(query);
+
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+
+
 
 exports.getListOfUsers = async (page, limit, active) => {
     try {
