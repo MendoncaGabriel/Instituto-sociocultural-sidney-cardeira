@@ -79,10 +79,9 @@ exports.create = async (req, res) => {
     }
 };
 
-
-exports.updateUser = async (req, res) => {
+exports.update = async (req, res) => {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
         const data = req.body;
 
         let userObject = {
@@ -153,10 +152,9 @@ exports.updateUser = async (req, res) => {
     }
 };
 
-
-exports.activateUser = async (req, res) => {
+exports.activate = async (req, res) => {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
 
         // Atualizar o usuário no banco de dados
         const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: true }, { new: true });
@@ -173,9 +171,9 @@ exports.activateUser = async (req, res) => {
     }
 };
 
-exports.disactivateUser = async (req, res) => {
+exports.disactivate = async (req, res) => {
     try {
-        const id = req.params.id;
+        const id = req.query.id;
 
         // Atualizar o usuário no banco de dados
         const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: false }, { new: true });
@@ -192,9 +190,7 @@ exports.disactivateUser = async (req, res) => {
     }
 };
 
-
-//GET
-exports.searchUserById = async (id) => {
+exports.findById = async (id) => {
     try{
         const user = await userSchema.findById(id)
         return user
@@ -204,7 +200,7 @@ exports.searchUserById = async (id) => {
     }
 };
 
-exports.getFilter = async (req, res) => {
+exports.findByFilter = async (req, res) => {
     try {
         let query = {};
 
@@ -230,12 +226,7 @@ exports.getFilter = async (req, res) => {
     }
 };
 
-
-
-
-
-
-exports.getListOfUsers = async (page, limit, active) => {
+exports.getList = async (page, limit, active) => {
     try {
         const skip = (page - 1) * limit;
         const users = await userSchema.find({activeUser: active || true}).skip(skip).limit(limit);
@@ -250,31 +241,9 @@ exports.getListOfUsers = async (page, limit, active) => {
     }
 };
 
-exports.searchUserByName = async (req, res) => {
-    try{
-        const name = req.params.name
-        const user = await userSchema.findOne({name: name})
-        res.status(200).json(user)
-    }
-    catch(err){
-        res.status(400).json(err)
-    }
-}
-
-exports.searchUserByTel = async (req, res) => {
-    try{
-        const tel = req.params.tel
-        const user = await userSchema.findOne({tel: tel})
-        res.status(200).json(user)
-    }
-    catch(err){
-        res.status(400).json(err)
-    }
-}
-
-exports.searchUsersByDate = async (req, res) => {
+exports.findByDate = async (req, res) => {
     try {
-        const dateString = req.params.date; // Recebe a string de data do parâmetro (dia-mes-ano "15-03-2024")
+        const dateString = req.query.date; // Recebe a string de data do parâmetro (dia-mes-ano "15-03-2024")
 
         // Divida a string de data em dia, mês e ano
         const [day, month, year] = dateString.split('-');
@@ -295,18 +264,3 @@ exports.searchUsersByDate = async (req, res) => {
         res.status(400).json({ message: "Ocorreu um erro ao buscar usuários cadastrados na data especificada", error: err });
     }
 };
-
-exports.searchUsersByActive = async (req, res) => {
-    try {
-        const active = req.params.active; 
-
-       
-        const users = await userSchema.find({ activeUser: active });
-
-        res.status(200).json(users);
-    } catch (err) {
-        res.status(400).json({ message: "Ocorreu um erro ao buscar usuários Ativos / Inativos", error: err });
-    }
-};
-
-

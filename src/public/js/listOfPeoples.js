@@ -25,7 +25,7 @@ function filter(){
     }
     
 
-    fetch(`/user/getFilter${paramsFilter}`, {
+    fetch(`/user/findByFilter${paramsFilter}`, {
         method: 'GET',
         headers:{'Content-Type': 'application/json'}
     })

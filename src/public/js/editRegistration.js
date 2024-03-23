@@ -5,14 +5,14 @@ function updateUser(id){
   const formData = new FormData(form); 
   
 
-  fetch('/user/updateUser/' + id, {
+  fetch(`/user/update?id=${id}`, {
     method: 'POST',
     body: formData 
   })
   .then(res => res.json())
   .then(data => {
     console.log(data);
-    window.location.href = '/perfil?id=' + id
+    window.location.href = `/perfil?id=${id}`
   })
   .catch(error => {
     console.error('Erro ao enviar formulário:', error);
@@ -107,7 +107,7 @@ function deactivateRegistration(id){
 
   if(res.toLocaleLowerCase() == 'sim'){
 
-    fetch('/user/disactivateUser/' + id, {
+    fetch(`/user/disactivateUser?id=${id}`, {
       method: 'GET',
     })
     .then(res => res.json())

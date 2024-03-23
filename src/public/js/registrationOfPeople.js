@@ -19,7 +19,7 @@ form.addEventListener('submit', event => {
   .catch(error => {
     console.error('Erro ao enviar formulário:', error);
   });
-});
+})
 
 function scrollToBottom() {
   document.querySelector('main').scrollTo({
@@ -38,7 +38,7 @@ function addNewDependent() {
     </div>
 
     <!-- Formulario de dependente -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-x-5 gap-y-5">
+    <div class="grid grid-cols-1 md:grid-cols-4 px-10 py-2 gap-x-5 gap-y-5">
       <div class="block w-full">
         <label for="" class="block text-sm text-gray-500">Nome:  <span class="text-red-500">*</span></label>
         <input required type="text" name="name_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
@@ -55,13 +55,7 @@ function addNewDependent() {
         <label required for="" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500">*</span></label>
         <input type="text" name="dateOfBirth_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
       </div>
-      <div class="block w-full">
-        <label for="" class="block text-sm text-gray-500">Imagem:</label>
-        <div class="text-md bg-gray-200 border-2 border-gray-500 active:border-blue-500 px-4 w-48 h-10 py-2 rounded-lg text-gray-600 relative"> 
-          <span class="text-sm w-full h-full flex items-center justify-center">Selecione uma imagem</span>   
-          <input type="file" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">
-        </div>
-      </div>
+      
     </div>
   
   </div>`;
@@ -74,14 +68,10 @@ function addNewDependent() {
   scrollToBottom();
 }
 
-
-
 function removeDependent(element){
   element.parentNode.parentNode.remove()
 
 }
-
-
 
 // CONSULTA CEP
 const cep = document.querySelector('[name="cep"]')

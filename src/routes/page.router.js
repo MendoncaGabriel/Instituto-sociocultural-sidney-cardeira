@@ -8,6 +8,7 @@ router.get('/cadastrar-pessoa', indexController.registrationOfPeople)
 router.get('/lista-de-pessoas', indexController.listOfPeoples)
 router.get('/perfil', indexController.personProfile)
 router.get('/editar-cadastro', indexController.editRegistration)
+router.get('/editar-dependente', indexController.editDependent)
 
 
 module.exports = router

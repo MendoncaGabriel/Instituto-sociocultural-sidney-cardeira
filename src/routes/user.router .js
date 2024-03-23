@@ -3,20 +3,13 @@ const router = express.Router()
 const userController = require('../controllers/user.controller')
 const upload = require('../middlewares/upload.middleware')
 
-
 router.post('/create',  upload, userController.create)
-
-
-router.post('/updateUser/:id', upload, userController.updateUser)
-
-router.get('/searchUserById/:id', userController.searchUserById)
-router.get('/searchUserByName/:name', userController.searchUserByName)
-router.get('/searchUserByTel/:tel', userController.searchUserByTel)
-router.get('/searchUsersByDate/:date', userController.searchUsersByDate)
-router.get('/searchUsersByActive/:active', userController.searchUsersByActive)
-router.get('/disactivateUser/:id', userController.disactivateUser)
-router.get('/activateUser/:id', userController.activateUser)
-router.get('/getListOfUsers/:page/:limit', userController.getListOfUsers)
-router.get('/getFilter/', userController.getFilter)
+router.post('/update', upload, userController.update)
+router.get('/activate', userController.activate)
+router.get('/disactivate', userController.disactivate)
+router.get('/findById', userController.findById)
+router.get('/findByFilter', userController.findByFilter)
+router.get('/getList', userController.getList)
+router.get('/findByDate', userController.findByDate)
 
 module.exports = router
