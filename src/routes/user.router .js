@@ -8,7 +8,7 @@ router.post('/update', upload, userController.update)
 router.get('/activate', userController.activate)
 router.get('/disactivate', userController.disactivate)
 router.get('/findById', userController.findById)
-router.get('/findByFilter', userController.findByFilter)
+router.get('/findByFilter', userController.findByQuery)
 router.get('/getList', userController.getList)
 router.get('/findByDate', userController.findByDate)
 

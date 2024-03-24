@@ -20,7 +20,7 @@
                 <div class="flex mt-2">
                     
                     <div class="mb-5  gap-x-10 gap-y-5">
-                        <img id="previewImage" src="<%= typeof dependent.image !== 'undefined' && userData.image ? '/images/'+ userData.image : '/default-placeholder.png' %>" alt="" class="shadow-md w-52 h-72 m-auto mb-5 mr-10 object-cover">
+                        <img id="previewImage" src="<%= typeof dependent.image !== 'undefined' && dependent.image ? '/images/'+ dependent.image : '/default-placeholder.png' %>" alt="" class="shadow-md w-52 h-72 m-auto mb-5 mr-10 object-cover">
                         <div class="text-md bg-gray-200 border-2 border-gray-500 active:border-blue-500  px-4 w-48 h-10 py-2 rounded-lg text-gray-600 relative m-auto"> 
                             <span class="text-sm w-full h-ful flex items-center justify-center">Selecione uma imagem</span>   
                             <input id="inputFile" type="file" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">

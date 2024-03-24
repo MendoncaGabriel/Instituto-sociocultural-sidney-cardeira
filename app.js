@@ -3,7 +3,7 @@ const compression = require( 'compression' )
 const cors = require('cors')
 const path = require('path');
 require('dotenv').config()
-require('./src/database/connect')
+require('./src/models/database')
 
 const app = express()
 

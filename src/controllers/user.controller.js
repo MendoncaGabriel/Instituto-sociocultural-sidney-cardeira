@@ -1,12 +1,14 @@
 const fs = require('fs');
 const path = require('path')
-const userSchema = require('../database/schema/usuario.schema')
+// const userSchema = require('../models/schema/usuario.schema')
+const userModel = require('../models/userModel')
 
 //CREATE
 exports.create = async (req, res) => {
     try{
         const data = req.body
 
+        //FORMATAR OBJETO DATAFORM
         let userObject = {
             name: data.name ?? '',
             sex: data.sex ?? '',
@@ -29,7 +31,7 @@ exports.create = async (req, res) => {
             },
             dependents: [],
             createdAt: new Date()
-        };
+        }
 
         //AGRUPANDO DEPENDENTES EM ARRAY DE OBJETOS
         if(data.name_dependent){
@@ -62,20 +64,17 @@ exports.create = async (req, res) => {
             }
         }
         
-
-        const newUser = new userSchema(userObject)
-        const savedUser = await newUser.save()
+        const savedUser = await userModel.create(userObject)
         res.status(200).json(savedUser)
     }
-    catch(err){
-        if (err.code === 11000) {
-            const duplicatedField = Object.keys(err.keyPattern)[0];
-            console.log(err)
-            console.log(duplicatedField)
+    catch(error){
+        console.error('Erro:', error.message);
+        if (error.code === 11000) {
+            const duplicatedField = Object.keys(error.keyPattern)[0];
             return res.status(400).json(`O campo '${duplicatedField}' já está em uso.`);
         }
-        console.log(err)
-        res.status(400).json(err)
+        
+        res.status(400).json(error)
     }
 };
 
@@ -108,10 +107,11 @@ exports.update = async (req, res) => {
         data.sex ? userObject.sex = data.sex  : ''
 
 
-        if(req.files[0].filename){
+        if(req.files && req.files[0] && req.files[0].filename){
             userObject.image = req.files[0].filename
 
-            const oldUser = await userSchema.findById(id)
+            const oldUser = await userModel.findById(id)
+
             if(oldUser.image ){
                 const imagePath = path.join(__dirname, '../', 'public', 'images', oldUser.image);
 
@@ -135,38 +135,27 @@ exports.update = async (req, res) => {
             
         }
 
-
-        // Atualiza os dados do usuário
-        const updatedUser = await userSchema.findByIdAndUpdate(id, userObject, { new: true });
-
-        // Verifica se o usuário foi encontrado e atualizado com sucesso
+        const updatedUser = await userModel.update(id, userObject)
         if (!updatedUser) {
             return res.status(404).json({ message: "Usuário não encontrado" });
         }
 
         res.status(200).json(updatedUser);
-    } catch (err) {
-        // Trata erros durante a atualização do usuário
-        console.error('Erro ao atualizar dados do usuário:', err);
-        res.status(400).json({ message: "Ocorreu um erro ao atualizar dados do usuário", error: err });
+    } catch (error) {
+        console.error('Erro:', error.message);
+
+        res.status(400).json({ message: "Ocorreu um erro ao atualizar dados do usuário"});
     }
 };
 
 exports.activate = async (req, res) => {
     try {
-        const id = req.query.id;
-
-        // Atualizar o usuário no banco de dados
-        const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: true }, { new: true });
-
-        // Verificar se o usuário foi encontrado e atualizado com sucesso
-        if (!updatedUser) {
-            return res.status(404).json({ message: "Usuário não encontrado" });
-        }
+        const id = req.query.id
+        const updatedUser = await userModel.activate(id)
 
         res.status(200).json({msg:"Usuario ativo", updatedUser});
-    } catch (err) {
-        console.error("Erro ao desativar usuário:", err);
+    } catch (error) {
+        console.error('Erro:', error.message);
         res.status(500).json({ message: "Ocorreu um erro ao ativar usuário" });
     }
 };
@@ -174,18 +163,11 @@ exports.activate = async (req, res) => {
 exports.disactivate = async (req, res) => {
     try {
         const id = req.query.id;
+        const updatedUser = await userModel.disactivate(id)
 
-        // Atualizar o usuário no banco de dados
-        const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: false }, { new: true });
-
-        // Verificar se o usuário foi encontrado e atualizado com sucesso
-        if (!updatedUser) {
-            return res.status(404).json({ message: "Usuário não encontrado" });
-        }
-
-        res.status(200).json({msg:"Usuario ativo", updatedUser});
-    } catch (err) {
-        console.error("Erro ao desativar usuário:", err);
+        res.status(200).json({msg:"Usuario desativado", updatedUser});
+    } catch (error) {
+        console.error('Erro:', error.message);
         res.status(500).json({ message: "Ocorreu um erro ao ativar usuário" });
     }
 };
@@ -195,12 +177,13 @@ exports.findById = async (id) => {
         const user = await userSchema.findById(id)
         return user
     }
-    catch(err){
-        throw err;
+    catch(error){
+        console.error('Erro:', error.message);
+        res.status(500).json({msg:"Erro ao desativar usuario"});
     }
 };
 
-exports.findByFilter = async (req, res) => {
+exports.findByQuery = async (req, res) => {
     try {
         let query = {};
 
@@ -218,46 +201,29 @@ exports.findByFilter = async (req, res) => {
             query.cpf = { $regex: regexCPF };
         }
 
-        const users = await userSchema.find(query);
+        const users = await userModel.findByQuery(query)
 
-        res.json(users);
+        res.status(200).json(users);
     } catch (error) {
+        console.error('Erro:', error.message);
         res.status(500).json({ message: error.message });
     }
 };
 
 exports.getList = async (page, limit, active) => {
     try {
-        const skip = (page - 1) * limit;
-        const users = await userSchema.find({activeUser: active || true}).skip(skip).limit(limit);
-        
-        return {
-            currentPage: page,
-            totalPages: Math.ceil(await userSchema.countDocuments() / limit),
-            users
-        };
+        const users = await userModel(page, limit, active)
+
+        return users
     } catch (err) {
-        throw err;
+        res.status(500).json({msg: 'Erro ao pegar usuarios em lista'})
     }
 };
 
 exports.findByDate = async (req, res) => {
     try {
-        const dateString = req.query.date; // Recebe a string de data do parâmetro (dia-mes-ano "15-03-2024")
-
-        // Divida a string de data em dia, mês e ano
-        const [day, month, year] = dateString.split('-');
-
-        // Reconstrua a string de data no formato "ano-mes-dia"
-        const formattedDate = `${year}-${month}-${day}`;
-
-        // Converta a string de data para um objeto Date
-        const date = new Date(formattedDate);
-        // Configure a data para iniciar às 00:00:00 para incluir todos os registros do dia
-        date.setHours(0, 0, 0, 0);
-
-        // Realize a consulta no banco de dados para buscar usuários cadastrados na data especificada
-        const users = await userSchema.find({ createdAt: { $gte: date } });
+        const date = req.query.date; 
+        const users = await userModel.findByDate(date)
 
         res.status(200).json(users);
     } catch (err) {
