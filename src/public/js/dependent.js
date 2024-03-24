@@ -1,6 +1,3 @@
-
-
-
 const inputFile = document.getElementById('inputFile');
 // Obtém referência para o elemento img
 const previewImage = document.getElementById('previewImage');

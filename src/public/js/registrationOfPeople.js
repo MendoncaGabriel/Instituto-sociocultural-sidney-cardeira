@@ -69,7 +69,6 @@ function addNewDependent() {
 
 function removeDependent(element){
   element.parentNode.parentNode.remove()
-
 }
 
 // CONSULTA CEP

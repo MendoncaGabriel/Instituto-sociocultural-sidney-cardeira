@@ -48,8 +48,9 @@ function deactivateDependent(id){
     .then(res => res.json())
     .then(data => {
       console.log(data);
-      window.history.back()
-      //window.location.href = '/lista-de-pessoas'
+      console.log(data)
+      //window.history.back()
+      window.location.href = `/perfil?id=${data.updatedUser}`
     })
     .catch(error => {
       console.error('Erro ao enviar formulário:', error);

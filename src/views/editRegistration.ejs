@@ -46,6 +46,14 @@
                         <label for="dateOfBirth" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500 ">*</span></label>
                         <input value="<%= userData.dateOfBirth ?? "Não definido"%>" required type="text" name="dateOfBirth" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
                     </div>
+                    <div class="block w-full">
+                        <label for="sex" class="block text-sm text-gray-500">Sexo:  <span class="text-red-500 ">*</span></label>
+                        <select required name="sex" id="" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+                            <option <% userData.sex != 'man' &&  userData.sex != 'woman' ? 'selected' : ''  %> disabled value="man">Selecione</option>
+                            <option <%= userData.sex == 'man' ? 'selected' : ''  %>  value="man">Homen</option>
+                            <option <%= userData.sex == 'woman' ? 'selected' : ''  %> value="woman">Mulher</option>
+                        </select>
+                    </div>
                     <div class="relative z-0 w-full mb-5 group">
                         <label for="whatsapp" class="text-sm text-gray-500">WhatsApp</label> <br>
                         <input <%= userData.whatsapp ? 'checked': '' %>  type="checkbox" name="whatsapp">
@@ -98,7 +106,6 @@
 
                 <div class="flex items-center space-x-4 justify-end mt-20 ">
 
-                    <button onclick="addNewDependent()" type="button" class="text-white bg-green-600 hover:bg-green-700  block focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">ADICIONAR DEPENDENTE</button>
                     
                     <button onclick="updateUser('<%= userData._id %>')" type="button" class="text-white bg-blue-600 hover:bg-blue-700 ml-auto block focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">SALVAR ATUALIZAÇÃO</button>
                 </div>

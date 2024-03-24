@@ -12,7 +12,17 @@
         <%- include('components/navbar.ejs') %>
 
         <main class="bg-gray-300 p-10 shadow  col-span-5 row-span-9 w-full">
+            <section class="mx-auto bg-white p-10 w-full text-gray-600  max-w-screen-md">
 
+                <h2 class="text-2xl">Metadados do Sistema</h2>
+                <hr class="my-5">
+                <p>Pessoas cadastradas: <%= data.persons  %></p>
+                <p>Homens: <%= data.man  %></p>
+                <p>Mulheres: <%= data.woman  %></p>
+                <p>Dependentes: <%= data.dependents  %></p>
+                <p>Dependentes Mulheres: <%= data.dependentsWoman  %></p>
+                <p>Dependentes Homens: <%= data.dependentsMan  %></p>
+            </section>
         </main>
 
     </section>

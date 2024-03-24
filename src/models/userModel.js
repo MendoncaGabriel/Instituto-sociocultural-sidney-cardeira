@@ -52,6 +52,92 @@ const validation = {
     }
 };
 
+exports.metadata = async () => {
+    const data = {
+        persons: 0, 
+        woman: 0,
+        man: 0,
+        dependents: 0,
+        dependentsWoman: 0,
+        dependentsMan: 0
+    }
+
+    data.persons = await userSchema.countDocuments();
+    data.woman = await userSchema.countDocuments({ sex: 'woman' });
+    data.man = await userSchema.countDocuments({ sex: 'man' });
+
+
+    //TOTAL DE DEPENDENTES HOMENS
+    const totalManDependents = await userSchema.aggregate([
+        {
+            $project: {
+                dependentsMan: {
+                    $filter: {
+                        input: '$dependents',
+                        as: 'dependent',
+                        cond: { $eq: ['$$dependent.sex', 'man'] }
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                totalDependentsMen: { $size: '$dependentsMan' }
+            }
+        }
+    ]);
+    data.dependentsMan =  totalManDependents.length > 0 ? totalManDependents[0].totalDependentsMen : 0;
+
+    //TOTAL DE DEPENDENTES HOMENS
+    const totalWomanDependents = await userSchema.aggregate([
+        {
+            $project: {
+                dependentsMan: {
+                    $filter: {
+                        input: '$dependents',
+                        as: 'dependent',
+                        cond: { $eq: ['$$dependent.sex', 'woman'] }
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                totalDependentsMen: { $size: '$dependentsMan' }
+            }
+        }
+    ]);
+    data.dependentsWoman =  totalWomanDependents.length > 0 ? totalWomanDependents[0].totalDependentsMen : 0;
+ 
+
+
+    // TOTAL DE DEPENDENTES
+    const totalCountDependents = await userSchema.aggregate([
+        {
+            $project: {
+                totalDependents: { $size: '$dependents' }
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                totalCount: { $sum: '$totalDependents' }
+            }
+        }
+    ]);
+    data.dependents = totalCountDependents.length > 0 ? totalCountDependents[0].totalCount : 0;
+
+
+
+
+    
+
+
+    return data
+
+
+}
+
 exports.create = async (data) =>{
     try {
         // //VALIDAÇÕES
@@ -98,6 +184,7 @@ exports.findById = async (id) => {
         throw new Error('Erro ao abuscar usuario por id')
     }
 }
+
 exports.findByIdDependents = async (id) => {
     try {
         const user = await userSchema.findOne({'dependents._id': id});
@@ -116,6 +203,7 @@ exports.findByIdDependents = async (id) => {
         throw new Error('Erro ao buscar dependente por id: ' + error.message);
     }
 }
+
 exports.findByIdAndUpdateDependent = async (id, newData, img) => {
     try {
         const user = await userSchema.findOne({'dependents._id': id});
@@ -169,8 +257,19 @@ exports.findByIdAndUpdateDependent = async (id, newData, img) => {
     }
 }
 
-
-
+exports.addNewDependent = async (id, dependent) => {
+    console.log(id)
+    console.log(dependent)
+    try {
+       
+        const updatedUser = await userSchema.findByIdAndUpdate(id, { $push: { dependents: dependent } }, { new: true });
+        console.log('Dependente adicionado com sucesso:');
+        return updatedUser;
+    } catch (err) {
+        console.error('Erro ao adicionar dependente:', err);
+        throw err; // Rejeitar a promessa e propagar o erro para o chamador
+    }
+}
 
 exports.activate = async (id) => {
     try {        
@@ -195,6 +294,7 @@ exports.disactivate = async (id) => {
         throw new Error('Erro ao desativar')
     }
 }
+
 exports.disactivateDependent = async (id) => {
     try {        
         const user = await userSchema.findOne({'dependents._id': id});
@@ -210,7 +310,7 @@ exports.disactivateDependent = async (id) => {
 
    
         if (dependent) {
-            return dependent
+            return  user._id.toString()
         }
 
     } catch (error) {
@@ -227,6 +327,7 @@ exports.findByQuery = async (query) => {
     }
 
 }
+
 exports.getList = async (page, limit, active) => {
     try {
         const skip = (page - 1) * limit;
@@ -237,8 +338,7 @@ exports.getList = async (page, limit, active) => {
     } catch (err) {
         throw new Error('Erro ao buscar usuários por lista');
     }
-};
-
+}
 
 exports.findByDate = async (dateString) => {
     try{
@@ -260,3 +360,4 @@ exports.findByDate = async (dateString) => {
         throw new Error('Erro ao buscar usuarios por data')
     }
 }
+

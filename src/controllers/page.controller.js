@@ -1,8 +1,9 @@
 const userModel = require('../models/userModel')
 
 
-exports.index = (req, res) => {
-    res.render('home', {page: 'home'})
+exports.index = async (req, res) => {
+    const data = await userModel.metadata()
+    res.render('home', {page: 'home', data: data})
 }
 
 exports.registrationOfPeople = (req, res) => {

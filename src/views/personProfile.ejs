@@ -12,7 +12,7 @@
         <%- include('components/assidebar.ejs') %>
         <%- include('components/navbar.ejs') %>
 
-        <main class="bg-gray-300 p-10 shadow  col-span-5 row-span-9 w-full border border-red-500 overflow-y-auto">
+        <main class="bg-gray-300 p-10 shadow  col-span-5 row-span-9 w-full  overflow-y-auto">
             <section class="mx-auto bg-white p-10 w-full text-gray-600 ">
 
                 <h2 class="text-2xl">Principal</h2>
@@ -25,6 +25,7 @@
                         <div class=" px-4">
                             <h2 class="text-lg text-gray-600 mb-2 mt-5">Principal</h2><hr>
                             <p><b>Nome: </b><%= userData.name ?? 'Não definido' %></p>
+                            <p><b>Sexo: </b><%= userData.sex === 'woman' ? 'Mulher' : userData.sex === 'man' ? 'Homem' : 'Não definido' %></p>
                             <p><b>Status: </b><%= userData.activeUser ? 'ATIVO' : 'INATIVO' %></p>
                             <p><b>RG: </b><%= userData.rg ?? 'Não definido' %></p>
                             <p><b>CPF: </b><%= userData.cpf ?? 'Não definido' %></p>
@@ -68,6 +69,7 @@
                                         <p><b>Nascimento: </b><%= e.dateOfBirth ?? 'Não definido' %></p>
                                         <p><b>RG: </b><%= e.rg ?? 'Não definido' %></p>
                                         <p><b>CPF: </b><%= e.cpf ?? 'Não definido' %></p>
+                                        <p><b>Sexo: </b><%= e.sex == 'man' ? 'Homen' : 'Mulher' %></p>
                                     </div>
                                 </div>
                             </a>
@@ -76,15 +78,57 @@
 
                 </div>
                         
-    
-                                  
-                <a href="/editar-cadastro?id=<%= userData._id  %>" class="ml-auto block w-52 text-center  rounded-sm px-8 py-2 text-white bg-blue-600 hover:bg-blue-500">EDITAR USUARIO</a>
+                <div class="flex items-center justify-end space-x-4">
+                    <button onclick="openPopUpAddNewDependent()" type="button" class="block w-72 text-center  rounded-sm px-8 py-2 text-white bg-green-600 hover:bg-green-500">ADICIONAR DEPENDENTE</button>
+
+                    <a href="/editar-cadastro?id=<%= userData._id  %>" class=" block w-52 text-center  rounded-sm px-8 py-2 text-white bg-blue-600 hover:bg-blue-500">EDITAR USUARIO</a>
+                </div>
+               
             </section>
           
             
         </main>
 
     </section>
+    <section id="popupDependent" class="border hidden p-10 bg-gray-50 shadow-2xl rounded-sm absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <button onclick="closePopUpAddNewDependent()" type="button" class="ml-auto  block px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold ">FECHAR</button>
+        
+        <div class="border my-5 shadow-md px-4 py-2 bg-white">
+            <form id="formNewDependent">
+
+                <!-- Formulario de dependente -->
+                <div class="grid grid-cols-1  px-10 py-2 gap-x-5 gap-y-5">
+                    <div class="block w-full">
+                        <label for="" class="block text-sm text-gray-500">Nome:  <span class="text-red-500">*</span></label>
+                        <input required type="text" name="name" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+                    </div>
+                    <div class="block w-full">
+                        <label for="" class="block text-sm text-gray-500">RG:</label>
+                        <input type="text" name="rg" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="block w-full">
+                        <label for="" class="block text-sm text-gray-500">CPF:</label>
+                        <input type="text" name="cpf" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="block w-full">
+                        <label required for="" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500">*</span></label>
+                        <input type="text" name="dateOfBirth" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="block w-full">
+                        <label for="sex" class="block text-sm text-gray-500">Sexo:  <span class="text-red-500 ">*</span></label>
+                        <select required name="sex" id="" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+                            <option selected disabled value="man">Selecione</option>
+                            <option  value="man">Homen</option>
+                            <option  value="woman">Mulher</option>
+                        </select>
+                    </div>
+                    
+                </div>
+            </form>
+        </div>
+
+        <button type="button" onclick="addNewDependent('<%= userData._id  %>')" class="ml-auto w-full  block px-4 py-2 bg-green-600 hover:bg-green-500 text-white  ">ADICIONAR</button>
+    </section>
 </body>
 </html>
-
+<script src="/js/personProfile.js"></script>

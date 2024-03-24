@@ -160,6 +160,15 @@ exports.update = async (req, res) => {
         res.status(400).json({ message: "Ocorreu um erro ao atualizar dados do usuário"});
     }
 };
+exports.addNewDependent = async (req, res) => {
+    const newDependent = req.body
+    const id = req.params.id
+    newDependent.image = ''
+
+    const dependent = await userModel.addNewDependent(id, newDependent)
+    res.status(200).json(dependent)
+
+}
 
 exports.dependentUpdate = async (req, res) => {
     try {
