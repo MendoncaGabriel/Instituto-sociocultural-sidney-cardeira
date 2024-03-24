@@ -40,7 +40,7 @@ exports.editDependent = async (req, res) => {
     try {
         const id = req.query.id;
         const dependent = await userModel.findByIdDependents(id);
-        return res.render('dependent', {page: 'dependent', dependent})
+        return res.render('editDependent', {page: 'editDependent', dependent})
         
     } catch (error) {
         console.log(error)

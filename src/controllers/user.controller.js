@@ -35,22 +35,35 @@ exports.create = async (req, res) => {
 
         //AGRUPANDO DEPENDENTES EM ARRAY DE OBJETOS
         if(data.name_dependent){
-
-            for (let i = 0; i < data.name_dependent.length; i++) {
+            
+            if (typeof data.name_dependent !== 'object' || !Array.isArray(data.name_dependent)) {
+            
                 userObject.dependents.push({
-                    name: data.name_dependent[i],
-                    rg: data.rg_dependent[i],
-                    cpf: data.cpf_dependent[i],
-                    dateOfBirth: data.dateOfBirth_dependent[i],
-                    image: "-"
+                    name: data.name_dependent,
+                    rg: data.rg_dependent,
+                    cpf: data.cpf_dependent,
+                    dateOfBirth: data.dateOfBirth_dependent,
+                    image: ""
                 });
+                
+            }else{
+                for (let i = 0; i < data.name_dependent.length; i++) {
+                    userObject.dependents.push({
+                        name: data.name_dependent[i],
+                        rg: data.rg_dependent[i],
+                        cpf: data.cpf_dependent[i],
+                        dateOfBirth: data.dateOfBirth_dependent[i],
+                        image: ""
+                    });
+                }
             }
         }
+
 
         // SALVANDO IMAGENS
         if (req.files && req.files.length > 0) {
 
-            // Atualize a imagem do usuário principal
+            // Atualize a imagem do usuário 
             userObject.image = req.files[0].filename;
         
             // Atualize as imagens dos dependentes
@@ -148,6 +161,32 @@ exports.update = async (req, res) => {
     }
 };
 
+exports.dependentUpdate = async (req, res) => {
+    try {
+        const id = req.query.id;
+        console.log('>>> id:', id)
+        
+        const data = req.body;
+        console.log('>>> data:', data)
+
+        const img = req.files && req.files.length > 0 && req.files[0].filename ? req.files[0].filename : '';
+        console.log('>>> img:', img)
+
+
+        // Atualiza o dependente no banco de dados
+        const response = await userModel.findByIdAndUpdateDependent(id, data, img);
+        const dependenteAtualizado = response.dependent
+        console.log('>>> dependenteAtualizado:', dependenteAtualizado, response.user._id)
+        res.status(200).json({msg: 'Dependente atualizado!', dependenteAtualizado, userId: response.user._id})
+
+
+    } catch (error) {
+        console.error('Erro:', error.message);
+
+        res.status(400).json({ message: "Ocorreu um erro ao atualizar dados do usuário"});
+    }
+};
+
 exports.activate = async (req, res) => {
     try {
         const id = req.query.id
@@ -169,6 +208,17 @@ exports.disactivate = async (req, res) => {
     } catch (error) {
         console.error('Erro:', error.message);
         res.status(500).json({ message: "Ocorreu um erro ao ativar usuário" });
+    }
+};
+exports.disactivateDependent = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const updatedUser = await userModel.disactivateDependent(id)
+
+        res.status(200).json({msg:"Dependent desativado", updatedUser});
+    } catch (error) {
+        console.error('Erro:', error.message);
+        res.status(500).json({ message: "Ocorreu um erro ao ativar dependent" });
     }
 };
 

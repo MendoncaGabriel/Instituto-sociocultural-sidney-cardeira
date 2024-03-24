@@ -56,11 +56,11 @@
                             <option value="man">Homen</option>
                             <option value="woman">Mulher</option>
                         </select>
-                 
                     </div>
-
+                    
                 </div>
-              
+                
+     
                 <h2 class="text-gray-600 font-semibold text-lg  mb-5">Endereço</h2>
                 <div class="mb-5 grid grid-cols-3 gap-x-10 gap-y-5">
 
@@ -92,19 +92,21 @@
                 </div>
 
                 <h2 class="text-gray-600 font-semibold text-lg  mb-5">Imagem</h2>
-                <div class="mb-5 grid grid-cols-3 gap-x-10 gap-y-5">
-                    <div class="text-md bg-gray-200 border-2 border-gray-500 active:border-blue-500  px-4 w-48 h-10 py-2 rounded-lg text-gray-600 relative"> 
+                <div class="mb-5  gap-x-10 gap-y-5 w-80 space-y-4">
+                    <img src="/default-placeholder.png" id="previewImage" class="m-auto w-52 h-72 object-cover" alt="">
+                    <div class="m-auto text-md bg-gray-200 border-2 border-gray-500 active:border-blue-500  px-4 w-48 h-10 py-2 rounded-lg text-gray-600 relative"> 
                         <span class="text-sm w-full h-ful flex items-center justify-center">Selecione uma imagem</span>   
-                        <input type="file" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">
-                     </div>
+                        <input type="file" id="inputFile" name="image" class="w-48 h-10 overflow-hidden p-0 border border-red-700 absolute top-0 left-0 opacity-0">
+                    </div>
                 </div>
 
 
                 <hr>
                 <section class="mb-10" id="containerDependents"></section>
-                
-                <button onclick="addNewDependent()" type="button" class="text-white bg-green-600 hover:bg-green-700  block focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">ADICIONAR DEPENDENTE</button>
-                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 ml-auto block focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">CADASTRAR</button>
+                <div class="flex items-center justify-between">
+                    <button onclick="addNewDependent()" type="button" class="text-white bg-green-600 hover:bg-green-700  block focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">ADICIONAR DEPENDENTE</button>
+                    <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700  block focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-10 py-2.5 text-center ">CADASTRAR PESSOA</button>
+                </div>
             </form>
             
         </main>
@@ -112,29 +114,4 @@
     </section>
 </body>
 </html>
-<!-- por imagem no input -->
-<script>
-    // // Selecione o input de arquivo
-    // const inputFile = document.getElementById('photo');
-
-    // // Adicione um ouvinte de evento de mudança ao input de arquivo
-    // inputFile.addEventListener('change', function(event) {
-    //     // Verifique se há um arquivo selecionado
-    //     if (this.files && this.files[0]) {
-    //         // Crie um objeto URL para a imagem selecionada
-    //         const imageUrl = URL.createObjectURL(this.files[0]);
-            
-    //         // Selecione a div do contêiner de imagem
-    //         const imageContainer = document.getElementById('imageContainer');
-            
-    //         // Defina o background da div com a imagem selecionada
-    //         imageContainer.style.backgroundImage = `url(${imageUrl})`;
-    //     }
-    // });
-</script>
-
-<!-- enviar formulario -->
 <script src="/js/registrationOfPeople.js"></script>
-
-
-

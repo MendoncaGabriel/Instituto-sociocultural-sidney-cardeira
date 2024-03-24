@@ -55,25 +55,30 @@
                 <h2 class="text-2xl mt-10"><%=  userData.dependents  && userData.dependents.length > 0 ? 'Dependentes' : ''  %></h2>
                 <hr class="my-5">
                 <div class="grid lg:grid-cols-2 md:grid-cols-1 xl:grid-cols-3   gap-5 mb-5 ">
-                    <%userData.dependents.length > 0 && userData.dependents.forEach(e => { %>
-                        <a href="editar-dependente?id=<%= e._id %>">
 
-                            <div class="flex items-start  m-auto border shadow-md">
-                                <img src="<%= e.image ? `/images/${e.image}` : '/default-placeholder.png'  %>" alt="" class=" border-gray-300  w-36 h-52 object-cover rounded-sm">
-                                <div class="text-sm  ml-2">
-                                    <p><b>Nome: </b><%= e.name ?? 'Não definido' %></p>
-                                    <p><b>Data de Nascimento: </b><%= e.dateOfBirth ?? 'Não definido' %></p>
-                                    <p><b>RG: </b><%= e.rg ?? 'Não definido' %></p>
-                                    <p><b>CPF: </b><%= e.cpf ?? 'Não definido' %></p>
+                    <%userData.dependents.length > 0 && userData.dependents.forEach(e => { %>
+
+                        <% if (e.active) { %>
+                            <a href="editar-dependente?id=<%= e._id %>">
+
+                                <div class="flex items-start  m-auto border shadow-md">
+                                    <img src="<%= e.image ? `/images/${e.image}` : '/default-placeholder.png'  %>" alt="" class=" border-gray-300  w-36 h-52 object-cover rounded-sm">
+                                    <div class="text-sm  ml-2 p-5">
+                                        <p><b>Nome: </b><%= e.name ?? 'Não definido' %></p>
+                                        <p><b>Nascimento: </b><%= e.dateOfBirth ?? 'Não definido' %></p>
+                                        <p><b>RG: </b><%= e.rg ?? 'Não definido' %></p>
+                                        <p><b>CPF: </b><%= e.cpf ?? 'Não definido' %></p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                        <% }) %>
+                            </a>
+                        <% } %>
+                    <% }) %>
+
                 </div>
                         
     
                                   
-                <a href="/editar-cadastro?id=<%= userData._id  %>" class="ml-auto block max-w-min rounded-sm px-8 py-2 text-white bg-blue-600 hover:bg-blue-500">EDITAR</a>
+                <a href="/editar-cadastro?id=<%= userData._id  %>" class="ml-auto block w-52 text-center  rounded-sm px-8 py-2 text-white bg-blue-600 hover:bg-blue-500">EDITAR USUARIO</a>
             </section>
           
             

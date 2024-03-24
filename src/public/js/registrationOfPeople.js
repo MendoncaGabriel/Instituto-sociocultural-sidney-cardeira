@@ -1,7 +1,6 @@
 
 
 const form = document.querySelector('#formCreate')
-
 form.addEventListener('submit', event => {
   event.preventDefault();
   const formData = new FormData(form); 
@@ -93,3 +92,19 @@ cep.addEventListener('blur', () => {
   })
   .catch(error =>  alert('Erro ao consultar CEP'));
 })
+
+
+
+//CARREGAR IMAGEM DO INPUT
+const inputFile = document.getElementById('inputFile');
+const previewImage = document.getElementById('previewImage');
+
+inputFile.addEventListener('change', function() {
+  if (this.files && this.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImage.src = e.target.result;
+    }
+    reader.readAsDataURL(this.files[0]);
+  }
+});

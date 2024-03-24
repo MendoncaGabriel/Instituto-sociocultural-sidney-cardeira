@@ -4,6 +4,13 @@ const dependentSchema = new mongoose.Schema({
   name: {
     type: String,
   },
+  active: {
+    type: Boolean,
+    default: true
+  },
+  sex:{
+    type: String
+  },
   image: {
     type: String
   },

@@ -1,4 +1,6 @@
 const userSchema = require('../models/schema/usuario.schema')
+const path = require('path')
+const fs = require('fs')
 
 const validation = {
     cpf: (cpf) => {
@@ -99,6 +101,7 @@ exports.findById = async (id) => {
 exports.findByIdDependents = async (id) => {
     try {
         const user = await userSchema.findOne({'dependents._id': id});
+
         if (!user) {
             throw new Error('Usuário não encontrado');
         }
@@ -113,6 +116,60 @@ exports.findByIdDependents = async (id) => {
         throw new Error('Erro ao buscar dependente por id: ' + error.message);
     }
 }
+exports.findByIdAndUpdateDependent = async (id, newData, img) => {
+    try {
+        const user = await userSchema.findOne({'dependents._id': id});
+        if (!user) {
+            throw new Error('Usuário não encontrado');
+        }
+        
+        if(img.length > 0){
+            newData.image = img
+        }
+
+        const dependent = user.dependents.find(dep => dep._id.toString() == id);
+    
+        //remover imagem existente
+        if(img.length > 0 && dependent.image.length > 0){
+            // Caminho absoluto do arquivo
+            const caminhoAbsoluto = path.resolve(__dirname, '../', '../', 'src', 'public', 'images', dependent.image);
+
+            // Verificar se o arquivo existe
+            fs.access(caminhoAbsoluto, fs.constants.F_OK, (err) => {
+                if (err) {
+                    console.error(`>>> O arquivo  não existe.: ${dependent.image}`);
+                    return;
+                }
+
+                // Remover o arquivo
+                fs.unlink(caminhoAbsoluto, (err) => {
+                    if (err) {
+                        console.error(`Erro ao remover o arquivo ${dependent.image}: ${err}`);
+                        return;
+                    }
+                    console.log(`Arquivo ${dependent.image} removido com sucesso.`);
+                });
+               
+            });
+        }
+
+        // Atualiza os valores do dependente com os novos dados
+        Object.assign(dependent, newData);
+        // Salva o documento do usuário para persistir as alterações no dependente
+        await user.save();
+
+
+        if (dependent) {
+            return {dependent, user};
+        } else {
+            throw new Error('Dependente não encontrado');
+        }
+    } catch (error) {
+        throw new Error('Erro ao buscar dependente por id: ' + error.message);
+    }
+}
+
+
 
 
 exports.activate = async (id) => {
@@ -132,6 +189,28 @@ exports.disactivate = async (id) => {
         const updatedUser = await userSchema.findByIdAndUpdate(id, { activeUser: false }, { new: true });
         if (updatedUser) {
             return updatedUser
+        }
+
+    } catch (error) {
+        throw new Error('Erro ao desativar')
+    }
+}
+exports.disactivateDependent = async (id) => {
+    try {        
+        const user = await userSchema.findOne({'dependents._id': id});
+        if (!user) {
+            throw new Error('Dependent não encontrado');
+        }
+        const dependent = user.dependents.find(dep => dep._id.toString() == id);
+
+        // Atualiza os valores do dependente com os novos dados
+        Object.assign(dependent, { active: false });
+        // Salva o documento do usuário para persistir as alterações no dependente
+        await user.save();
+
+   
+        if (dependent) {
+            return dependent
         }
 
     } catch (error) {
