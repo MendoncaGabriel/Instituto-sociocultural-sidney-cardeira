@@ -1,5 +1,15 @@
 const mongoose = require('mongoose');
 
+const servicestSchema = new mongoose.Schema({
+  name: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  }
+  
+});
 const dependentSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -84,11 +94,12 @@ const userSchema = new mongoose.Schema({
   dateOfBirth: {
     type: String,
   },
+  services: [servicestSchema],
   address: address,
   dependents: [dependentSchema],
   createdAt: {
     type: Date,
-    default: Date.now 
+    default: Date.now()
   }
 });
 

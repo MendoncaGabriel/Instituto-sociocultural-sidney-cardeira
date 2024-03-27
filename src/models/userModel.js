@@ -1,4 +1,5 @@
-const userSchema = require('../models/schema/usuario.schema')
+const userSchema = require('./schema/personSchema')
+const serviceSchema = require('./schema/serviceSchema')
 const path = require('path')
 const fs = require('fs')
 
@@ -358,6 +359,25 @@ exports.findByDate = async (dateString) => {
         return users
     }catch(error){
         throw new Error('Erro ao buscar usuarios por data')
+    }
+}
+
+exports.assignServiceToPerson = async (idUser,idService) => {
+    const service = await serviceSchema.findById(idService)
+    service.createdAt = Date.now()
+
+    const user = await userSchema.findByIdAndUpdate(idUser, { $push: { services: service } }, { new: true });
+    return user
+}
+exports.removeAssignment = async (idUser, idService) => {
+    try {
+        // Remover o serviço do usuário
+        const user = await userSchema.findByIdAndUpdate(idUser, { $pull: { services: { _id: idService } } }, { new: true });
+        console.log(user)
+        return user;
+    } catch (error) {
+        console.error('Erro ao remover atribuição de serviço:', error);
+        throw error;
     }
 }
 

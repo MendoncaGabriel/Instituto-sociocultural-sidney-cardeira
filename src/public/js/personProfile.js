@@ -33,3 +33,48 @@ function addNewDependent(id){
         console.error('Erro ao enviar formulário:', error);
     });
 }
+
+function remove(){
+
+}
+
+function assignService(idUser){
+    const idService = document.getElementById('inputAssignService')
+
+    fetch(`/user/assignService/${idUser}/${idService.value}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+    
+        window.location.reload()
+    })
+    .catch(error => {
+        console.error('Erro ao enviar formulário:', error);
+    });
+}
+
+function removeAssignment(idUser, idService){
+    console.log(idUser, idService)
+    fetch(`/user/removeAssignment/${idUser}/${idService}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+    
+        window.location.reload()
+    })
+    .catch(error => {
+        console.error('Erro ao enviar formulário:', error);
+    });
+}

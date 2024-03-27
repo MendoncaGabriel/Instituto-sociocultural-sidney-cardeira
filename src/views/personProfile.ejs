@@ -83,6 +83,59 @@
 
                     <a href="/editar-cadastro?id=<%= userData._id  %>" class=" block w-52 text-center  rounded-sm px-8 py-2 text-white bg-blue-600 hover:bg-blue-500">EDITAR USUARIO</a>
                 </div>
+
+                <h2 class="text-2xl mt-10">Serviços Atribuidos</h2>
+                <hr class="my-5">
+                <div class="my-5">
+                    <select name="" id="inputAssignService" class="border py-2 px-4 min-w-96">
+                        <option value="" disabled selected>Selecione</option>
+                        <% services.map(element => { %>
+                            <option value="<%= element._id %>" class="text-gray-600"><%= element.name %></option>
+                        <% }) %> 
+                    </select>
+
+                    <button onclick="assignService('<%= userData._id %>')" class="text-white px-4 py-2 bg-blue-600 hover:bg-blue-500">Atribuir</button>
+                </div>
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-300  ">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Serviço
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Data
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Remover
+                            </th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody id="listOfPeoples">
+                        <% const users = [1,2,3,4,5] %>
+                        <% userData.services.forEach(e => { %> 
+                            <tr id="<%= e._id  %>" class="bg-gray-50  hover:bg-gray-200 border-b   relative">
+                                <th  scope="row" class="redirect px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">             
+                                    <%= e.name  %>
+                                </th>
+                                <td  scope="row" class="redirect px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">   
+                                    <%
+                                        const data = new Date(e.createdAt);
+                                        const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                                        const dataFormatada = data.toLocaleString('pt-BR', options);
+                                    %>
+                                    <%= dataFormatada %>
+
+                                </td>
+                                <td  scope="row" class="redirect px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">             
+                                    <button onclick="removeAssignment('<%= userData._id  %>', '<%= e._id  %>')" class="text-white px-4 py-2 bg-red-600 hover:bg-red-500">Remover</button>
+                                </td>
+       
+                            </tr>
+                        <% }) %>
+
+                    </tbody>
+                </table>
                
             </section>
           

@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const userController = require('../controllers/user.controller')
+const userController = require('../controllers/userController')
 const upload = require('../middlewares/upload.middleware')
 
+router.delete('/removeAssignment/:idUser/:idService', userController.removeAssignment)
+router.post('/assignService/:idUser/:idService', userController.assignService)
 router.post('/create',  upload, userController.create)
 router.post('/update', upload, userController.update)
 router.post('/dependentUpdate', upload, userController.dependentUpdate)

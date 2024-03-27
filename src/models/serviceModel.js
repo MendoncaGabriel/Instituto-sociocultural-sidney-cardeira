@@ -1,4 +1,4 @@
-const servicesModel = require('../models/schema/services.schema')
+const servicesModel = require('./schema/serviceSchema')
 
 module.exports = {
     create: async  (data) => {

@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/output.css">
+</head>
+<body class="bg-gray-100 w-full h-[100vh]  flex items-center justify-center">
+    <div class="bg-white rounded-md shadow-lg p-5 border w-96 min-h-52">
+        <div class="flex items-center justify-center">
+            <img src="/logo.png" alt="" class="h-12 mr-2">
+            <div>
+                <p class="text-sm text-gray-600">Instituto Sociocultural</p>
+                <h1 class="font-semibold text-lg text-gray-600">SIDNEY CERDEIRA</h1>
+            </div>
+        </div>
+        <h2 class="text-center my-2 text-gray-600">Digite usuário e senha para entrar</h2>
+
+       
+        <div class="py-2 w-full">
+            <label for="user">USUARIO:</label> <br>
+            <input type="text" name="user" id="user" class="border px-4 py-2  focus:outline-none w-full">
+        </div>
+        <div class="py-2 w-full">
+            <label for="pass">USUARIO:</label> <br>
+            <input type="password" name="pass" id="pass" class="border px-4 py-2  focus:outline-none w-full">
+        </div>
+        <button type="button" onclick="login()" class="bg-blue-600 hover:bg-blue-500 text-white py-2 w-full mt-2">ENTRAR</button>
+       
+    </div>
+
+</body>
+</html>
+<script src="/js/login.js"></script>
