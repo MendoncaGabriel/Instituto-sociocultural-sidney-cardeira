@@ -20,8 +20,10 @@ const app = express()
     app.use(express.static(path.join(__dirname,'src', 'public')));
 
 //ROTAS
-    const pageRouter = require('./src/routes/page.router')
-    const userRouter = require('./src/routes/user.router ')
+    const pageRouter = require('./src/routes/pageRouter')
+    const userRouter = require('./src/routes/userRouter')
+    const servicesRouter = require('./src/routes/serviceRouter')
+    app.use('/services', servicesRouter)
     app.use('/user', userRouter)
     app.use('/', pageRouter)
 

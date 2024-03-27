@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviços</title>
+    <link rel="stylesheet" href="/css/output.css">
+</head>
+
+<body class=" h-full">
+    <section class=" h-[100vh] w-full grid grid-cols-6 grid-rows-10">
+        <%- include('components/assidebar.ejs') %>
+        <%- include('components/navbar.ejs') %>
+
+        <main class="bg-gray-200 p-10 shadow  col-span-5 row-span-9 w-full  overflow-y-auto">
+            <!-- FILTROS -->
+            <section class="bg-white p-4 text-gray-500 text-sm flex  items-end px-10">
+                <div class="flex space-x-4">
+                    <div>
+                        <label for="service">Nome do Serviço:</label><br>
+                        <input id="service" type="text" class="px-4 py-2 focus:outline-none border">
+                    </div>
+                    
+                </div>
+                <button id="btnNovo" onclick="create()" class="bg-blue-500 hover:bg-blue-600 flex-none hover:shadow-md text-white font-semibold px-4 py-0 block h-10 ml-5">NOVO</button>
+   
+            </section>
+            
+            <!-- LISTA -->
+            <section class="mx-auto bg-white p-10 pt-5 w-full">
+
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300  ">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    SERVIÇOS
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    EDITAR
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    DELETAR
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="listOfPeoples">
+                          
+                            <% data.forEach(e => { %> 
+                                <tr class="bg-gray-50  hover:bg-gray-200 border-b   relative">
+                                    <td><%= e.name  %></td>
+                                    <td><button onclick="updateService('<%= e._id  %>', '<%= e.name  %>')" class="px-4 py-2 font-semibold text-white bg-blue-600 hover:bg-blue-500">EDITAR</button></td>
+                                    <td><button onclick="deleteService('<%= e._id  %>')" class="px-4 py-2 font-semibold text-white bg-red-600 hover:bg-red-500">DELETAR</button></td>
+                                </tr>
+                            <% }) %>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+          
+            
+        </main>
+
+    </section>
+</body>
+</html>
+
+
+
+<script src="/js/services.js"></script>

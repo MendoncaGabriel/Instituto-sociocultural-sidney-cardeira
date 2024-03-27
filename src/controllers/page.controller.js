@@ -1,5 +1,11 @@
 const userModel = require('../models/userModel')
+const serviceModel = require('../models/schema/services.schema')
 
+exports.services = async (req, res) => {
+
+    const data = await serviceModel.find();
+    res.render('services', {page: 'servicos', data})
+}
 
 exports.index = async (req, res) => {
     const data = await userModel.metadata()
