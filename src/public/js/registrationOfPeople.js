@@ -48,7 +48,7 @@ function addNewDependent() {
       </div>
       <div class="block w-full">
         <label for="" class="block text-sm text-gray-500">CPF:</label>
-        <input type="text" name="cpf_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+        <input type="text" name="cpf_dependent" onclick="formatInput.cpf(this)" maxlength="14" class=" w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
       </div>
       <div class="block w-full">
         <label required for="" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500">*</span></label>
@@ -65,6 +65,7 @@ function addNewDependent() {
   containerDependents.insertAdjacentHTML('beforeend', element);
 
   scrollToBottom();
+
 }
 
 function removeDependent(element){
