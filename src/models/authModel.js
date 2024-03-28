@@ -27,8 +27,11 @@ module.exports = {
         else if(user.user, user.pass){
             const userAccess = await userSchema.find({user: user.user})
             console.log(userAccess)
+            if(!userAccess){
+                return { status: false, msg: 'Credenciais inválidas' };
+            }
     
-            if(userAccess && userAccess[0].password == user.pass){
+            if(userAccess.length > 0 && userAccess[0].password == user.pass){
                 // Geração do token
                 const secret = process.env.SECRET;
                 const token = jwt.sign(
