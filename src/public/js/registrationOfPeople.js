@@ -44,7 +44,7 @@ function addNewDependent() {
       </div>
       <div class="block w-full">
         <label for="" class="block text-sm text-gray-500">RG:</label>
-        <input type="text" name="rg_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+        <input type="text" onclick="formatInput.rg(this)" maxlength="12" name="rg_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
       </div>
       <div class="block w-full">
         <label for="" class="block text-sm text-gray-500">CPF:</label>
@@ -52,7 +52,7 @@ function addNewDependent() {
       </div>
       <div class="block w-full">
         <label required for="" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500">*</span></label>
-        <input type="text" name="dateOfBirth_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
+        <input type="text"  onclick="formatInput.date(this)" name="dateOfBirth_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
       </div>
       
     </div>
