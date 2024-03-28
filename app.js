@@ -30,9 +30,10 @@ const app = express()
 
 //ROTAS
     const pageRouter = require('./src/routes/pageRouter')
-    const userRouter = require('./src/routes/userRouter')
+    const personRouter = require('./src/routes/personRouter')
     const servicesRouter = require('./src/routes/serviceRouter')
     const authRouter = require('./src/routes/authRouter')
+    const userRouter = require('./src/routes/userRouter')
 
     app.use('/auth', authRouter)
 
@@ -40,21 +41,23 @@ const app = express()
     // Middleware para verificar se o usuário está logado
     app.use(async (req, res, next) => {
         const token = req.cookies.token;
-
-        // Verifica se o token existe
         if (!token) {
             return res.render('login');
         }
 
         try {
-            // Verifica se o token é válido
             const decoded = jwt.verify(token, process.env.SECRET);
-
-            // Se o token for válido, o usuário está logado
-            console.log("Usuário está logado!");
-            next();
+            if(decoded){
+                console.log(decoded.type)
+                res.locals.typeUser = decoded.type
+                console.log("Usuário está logado!");
+                // console.log(decoded)
+                next();
+                return
+            }
+           
+            res.render('login');
         } catch (error) {
-            // Se ocorrer um erro ao verificar o token, redirecione para a página de login
             console.error("Erro ao verificar o token:", error.message);
             res.render('login');
         }
@@ -62,8 +65,9 @@ const app = express()
 
 
    
-    app.use('/services', servicesRouter)
     app.use('/user', userRouter)
+    app.use('/services', servicesRouter)
+    app.use('/user', personRouter)
     app.use('/', pageRouter)
 
 

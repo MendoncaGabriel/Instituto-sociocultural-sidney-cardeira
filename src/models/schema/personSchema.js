@@ -9,7 +9,8 @@ const servicestSchema = new mongoose.Schema({
     default: Date.now()
   }
   
-});
+})
+
 const dependentSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -33,7 +34,7 @@ const dependentSchema = new mongoose.Schema({
   dateOfBirth: {
     type: String,
   },
-});
+})
 
 const address = new mongoose.Schema({
   publicPlace:{
@@ -60,7 +61,7 @@ const address = new mongoose.Schema({
 
 })
 
-const userSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -101,8 +102,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now()
   }
-});
+})
 
-const User = mongoose.model('User', userSchema);
+const Person = mongoose.model('Person', personSchema);
 
-module.exports = User;
+module.exports = Person;

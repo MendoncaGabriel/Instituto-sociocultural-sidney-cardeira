@@ -8,6 +8,22 @@
         </div>
     </div>
 
-    <img src="/icons/icons8-usuário-100.png" alt="" class="h-12 hover:border  border-gray-600 rounded-full p-2">
+    <button onclick="sair()">
+        <img src="/icons/icons8-sair-100.png" alt="" class="h-12 hover:border  border-gray-600  p-2">
+    </button>
+    
 
 </div>
+
+<script>
+    function removerCookie(nome) {
+    document.cookie = `${nome}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
+
+
+    function sair(){
+    removerCookie('token');
+    window.location.reload()
+    }
+</script>

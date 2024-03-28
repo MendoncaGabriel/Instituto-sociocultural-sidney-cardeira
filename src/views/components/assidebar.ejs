@@ -12,5 +12,8 @@
         <li class="<%= page == 'servicos' ? 'bg-gray-500' : ''  %>">
             <a href="/servicos" class="hover:bg-gray-500 px-4 py-2 text-white w-full text-center block">Serviços</a>
         </li>
+        <li class="<%= page == 'usuarios' ? 'bg-gray-500' : ''  %> <%= typeof typeUser !== 'undefined' && typeUser && typeUser == 'admin' ? '' : 'hidden'  %>">
+            <a href="/usuarios" class="hover:bg-gray-500 px-4 py-2 text-white w-full text-center block">Usuários</a>
+        </li>
     </ul>
 </div>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Usuarios do Sistema</title>
+    <link rel="stylesheet" href="/css/output.css">
+</head>
+
+<body class=" h-full">
+    <section class=" h-[100vh] w-full grid grid-cols-6 grid-rows-10">
+        <%- include('components/assidebar.ejs') %>
+        <%- include('components/navbar.ejs') %>
+
+        <main class="bg-gray-200 p-10 shadow  col-span-5 row-span-9 w-full  overflow-y-auto">
+            <!-- FILTROS -->
+            <section class="bg-white p-4 text-gray-500 text-sm flex  items-end px-10">
+                <div class="flex space-x-4">
+                    <div>
+                        <label for="user">Usuário:</label><br>
+                        <input id="user" type="text" class="px-4 py-2 focus:outline-none border">
+                    </div>
+                    <div>
+                        <label for="pass">Senha:</label><br>
+                        <input id="pass" type="text" class="px-4 py-2 focus:outline-none border">
+                    </div>
+    
+                </div>
+                <button id="btnRegister" onclick="addNewUser()" class="bg-blue-500 hover:bg-blue-600 flex-none hover:shadow-md text-white font-semibold px-4 py-0 block h-10 ml-5">REGISTRAR</button>
+   
+            </section>
+            
+            <!-- LISTA -->
+            <section class="mx-auto bg-white p-10 pt-5 w-full">
+
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300  ">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Usuario
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Senha
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Registro
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Editar
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Remover
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="listOfPeoples">
+                            <% if (typeof users != "undefined" && users) { %>
+                                <% users.forEach(e => { %> 
+                                    <tr id="<%= e._id  %>" class="bg-gray-50  hover:bg-gray-200 border-b   relative">
+                                        <th  scope="row" class="redirect px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">             
+                                            <%= e.user  %>
+                                        </th>
+                                        <td class="px-6 py-4 redirect">
+                                            <div class="viewPass">
+                                                <p class="">********</p>
+                                                <p class="hidden"><%= e.password  %><p>
+                                            </div>
+                                            
+                                        </td>
+                                        
+                                        <td class="px-6 py-4 redirect">
+                                            <% const date = new Date(e.createdAt); %>
+                                            <%= `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} - ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}` %>
+                                        </td>
+                                        <td>
+                                            <button onclick="edit('<%= e._id %>', ' <%= e.user  %>', '<%= e.password  %>')" class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-500 rounded-sm hover:shadow-md">Editar</button>
+                                        </td>
+                                        <td>
+                                            <button onclick="removerUser('<%= e._id %>')" class="px-4 py-2 text-white bg-red-600 hover:bg-red-500 rounded-sm hover:shadow-md">Remover</button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } %>
+                            
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+          
+            
+        </main>
+
+    </section>
+</body>
+</html>
+
+<script src="/js/registerAccess.js"></script>

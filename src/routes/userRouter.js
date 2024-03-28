@@ -1,20 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/userController')
-const upload = require('../middlewares/upload.middleware')
 
-router.delete('/removeAssignment/:idUser/:idService', userController.removeAssignment)
-router.post('/assignService/:idUser/:idService', userController.assignService)
-router.post('/create',  upload, userController.create)
-router.post('/update', upload, userController.update)
-router.post('/dependentUpdate', upload, userController.dependentUpdate)
-router.get('/activate', userController.activate)
-router.get('/disactivate', userController.disactivate)
-router.get('/disactivateDependent', userController.disactivateDependent)
-router.post('/addNewDependent/:id', userController.addNewDependent)
-router.get('/findById', userController.findById)
-router.get('/findByFilter', userController.findByQuery)
-router.get('/getList', userController.getList)
-router.get('/findByDate', userController.findByDate)
+router.post('/', userController.create)
+router.patch('/:id', userController.update)
+router.delete('/:id', userController.delete)
 
 module.exports = router

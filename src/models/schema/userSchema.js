@@ -2,10 +2,6 @@
 const mongoose = require('mongoose')
 
 const User = mongoose.model('User', {
-	name: {
-		type: String,
-		required: true
-	},
 	user: {
 		type: String,
 		required: true
@@ -14,7 +10,10 @@ const User = mongoose.model('User', {
 		type: String,
 		required: true
 	},
-
+	createdAt: {
+		type: Date,
+		default: Date.now()
+	}
 })
 
 module.exports = User

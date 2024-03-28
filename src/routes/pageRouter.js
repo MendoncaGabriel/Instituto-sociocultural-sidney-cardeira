@@ -4,6 +4,7 @@ const indexController = require('../controllers/pageController')
 
 //index
 router.get('/', indexController.index)
+router.get('/usuarios', indexController.users)
 router.get('/cadastrar-pessoa', indexController.registrationOfPeople)
 router.get('/lista-de-pessoas', indexController.listOfPeoples)
 router.get('/perfil', indexController.personProfile)
