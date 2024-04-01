@@ -48,10 +48,11 @@ const app = express()
         try {
             const decoded = jwt.verify(token, process.env.SECRET);
             if(decoded){
-                console.log(decoded.type)
+                console.log(decoded)
                 res.locals.typeUser = decoded.type
+                req.nameUser = decoded.user || ''
                 console.log("Usuário está logado!");
-                // console.log(decoded)
+
                 next();
                 return
             }
@@ -73,7 +74,7 @@ const app = express()
 
 
 
-const PORT = process.env.PORT || 3002
+const PORT = process.env.PORT || 80
 app.listen(PORT,()=>{
     console.log(`Servidor aberto http://localhost:${PORT}`)
 })

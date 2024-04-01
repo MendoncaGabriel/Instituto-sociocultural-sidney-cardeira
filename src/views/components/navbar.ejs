@@ -7,10 +7,13 @@
             <h1 class="font-semibold text-lg text-gray-600">SIDNEY CERDEIRA</h1>
         </div>
     </div>
+    <div class="flex items-center space-x-5">
+        <h2><%= typeof nameUser != 'undefined' && nameUser ? nameUser.toUpperCase() : '' %></h2>
+        <button onclick="sair()">
+            <img src="/icons/icons8-sair-100.png" alt="" class="h-12 hover:scale-105  p-2" title="sair">
+        </button>
 
-    <button onclick="sair()">
-        <img src="/icons/icons8-sair-100.png" alt="" class="h-12 hover:border  border-gray-600  p-2">
-    </button>
+    </div>
     
 
 </div>

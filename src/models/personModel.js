@@ -60,84 +60,59 @@ exports.metadata = async () => {
         man: 0,
         dependents: 0,
         dependentsWoman: 0,
-        dependentsMan: 0
+        dependentsMan: 0,
+        children: 0,
+        elderly: 0
     }
 
-    data.persons = await personSchema.countDocuments();
-    data.woman = await personSchema.countDocuments({ sex: 'woman' });
-    data.man = await personSchema.countDocuments({ sex: 'man' });
+    const person = await personSchema.find()
+
+    data.persons =  person.filter(e => e.activeUser == true).length
+    data.woman =  person.filter(e => e.sex == 'woman').length
+    data.man =  person.filter(e => e.sex == 'man').length
+    data.dependents =  person.filter(e => e.dependents).length
+    const personWithDependents = person.map(e => e.dependents.length > 0 ? e.dependents : '');
+
+    data.dependentsWoman = personWithDependents
+    .flat() // Achatando a matriz para obter uma lista de todos os dependentes
+    .filter(dependent => dependent !== '' && dependent.sex === 'woman' && dependent.active === true)
+    .length;
+
+    data.dependentsMan = personWithDependents
+    .flat() // Achatando a matriz para obter uma lista de todos os dependentes
+    .filter(dependent => dependent !== '' && dependent.sex === 'man' && dependent.active === true)
+    .length;
 
 
-    //TOTAL DE DEPENDENTES HOMENS
-    const totalManDependents = await personSchema.aggregate([
-        {
-            $project: {
-                dependentsMan: {
-                    $filter: {
-                        input: '$dependents',
-                        as: 'dependent',
-                        cond: { $eq: ['$$dependent.sex', 'man'] }
-                    }
-                }
+     
+    const today = new Date();
+    const year = today.getFullYear();
+
+    person.map(e => {
+        if(e.activeUser == true){
+            const dateString = e.dateOfBirth
+            const dateParts = dateString.split('/');
+            const yearP = dateParts[2];
+    
+            const idade = year - yearP
+            if(idade <= 12){
+                data.children += 1
             }
-        },
-        {
-            $project: {
-                totalDependentsMen: { $size: '$dependentsMan' }
+            if(idade >= 60){
+                data.elderly += 1
             }
+
         }
-    ]);
-    data.dependentsMan =  totalManDependents.length > 0 ? totalManDependents[0].totalDependentsMen : 0;
-
-    //TOTAL DE DEPENDENTES HOMENS
-    const totalWomanDependents = await personSchema.aggregate([
-        {
-            $project: {
-                dependentsMan: {
-                    $filter: {
-                        input: '$dependents',
-                        as: 'dependent',
-                        cond: { $eq: ['$$dependent.sex', 'woman'] }
-                    }
-                }
-            }
-        },
-        {
-            $project: {
-                totalDependentsMen: { $size: '$dependentsMan' }
-            }
-        }
-    ]);
-    data.dependentsWoman =  totalWomanDependents.length > 0 ? totalWomanDependents[0].totalDependentsMen : 0;
- 
-
-
-    // TOTAL DE DEPENDENTES
-    const totalCountDependents = await personSchema.aggregate([
-        {
-            $project: {
-                totalDependents: { $size: '$dependents' }
-            }
-        },
-        {
-            $group: {
-                _id: null,
-                totalCount: { $sum: '$totalDependents' }
-            }
-        }
-    ]);
-    data.dependents = totalCountDependents.length > 0 ? totalCountDependents[0].totalCount : 0;
-
+    })
+    
 
 
 
     
 
-
-    return data
-
-
+    return data;
 }
+
 
 exports.create = async (data) =>{
     try {

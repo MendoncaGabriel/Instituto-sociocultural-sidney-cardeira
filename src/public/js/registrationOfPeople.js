@@ -37,7 +37,7 @@ function addNewDependent() {
     </div>
 
     <!-- Formulario de dependente -->
-    <div class="grid grid-cols-1 md:grid-cols-4 px-10 py-2 gap-x-5 gap-y-5">
+    <div class="grid grid-cols-1 md:grid-cols-3 px-10 py-2 gap-x-5 gap-y-5">
       <div class="block w-full">
         <label for="" class="block text-sm text-gray-500">Nome:  <span class="text-red-500">*</span></label>
         <input required type="text" name="name_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
@@ -50,6 +50,16 @@ function addNewDependent() {
         <label for="" class="block text-sm text-gray-500">CPF:</label>
         <input type="text" name="cpf_dependent" onclick="formatInput.cpf(this)" maxlength="14" class=" w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
       </div>
+
+      <div class="block w-full">
+      <label for="sex" class="block text-sm text-gray-500">Sexo:  <span class="text-red-500 ">*</span></label>
+      <select required name="sex" id="" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 focus:l">
+          <option selected disabled value="man">Selecione</option>
+          <option value="man">Masculino</option>
+          <option value="woman">Feminino</option>
+      </select>
+  </div>
+
       <div class="block w-full">
         <label required for="" class="block text-sm text-gray-500">Data de Nascimento:  <span class="text-red-500">*</span></label>
         <input type="text"  onclick="formatInput.date(this)" name="dateOfBirth_dependent" class="w-full px-4 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500">
