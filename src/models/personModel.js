@@ -105,11 +105,6 @@ exports.metadata = async () => {
         }
     })
     
-
-
-
-    
-
     return data;
 }
 

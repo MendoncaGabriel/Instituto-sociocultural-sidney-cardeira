@@ -24,7 +24,7 @@
                     </div>
                     <div>
                         <label for="tel">Telefone:</label><br>
-                        <input id="tel" type="text" class="px-4 py-2 focus:outline-none border">
+                        <input onclick="formatInput.tel(this)" id="tel"  maxlength="15" placeholder="(92) 99999-9999" type="text" class="px-4 py-2 focus:outline-none border">
                     </div>
                     <div>
                         <label for="cpf">CPF:</label><br>
@@ -133,5 +133,5 @@
     </section>
 </body>
 </html>
-
+<script src="/js/InputFormatters.js"></script>
 <script src="/js/listOfPeoples.js"></script>

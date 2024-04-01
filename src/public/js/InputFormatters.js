@@ -58,6 +58,15 @@ const formatInput = {
 };
 
 
+function mask(src, mascara){
+    const c = src.value.length;
+    const s = mascara.substring(0,1);
+    const t = mascara.substring(c);
+    if (t.substring(0,1) !== s) {
+        src.value += t.substring(0,1);
+    }
+}
+
 
 
 
